@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "jsx": "react",
+    "outDir": "./build/",
+    "rootDir": "./src/",
+
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+
+    "baseUrl": "./",
+    "paths": {
+      "*": [
+        "./src/*"
+      ]
+    }
+  }
+}
