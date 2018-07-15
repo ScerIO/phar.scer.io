@@ -18,7 +18,7 @@ mode === 'development' &&
       port: 3000,
       open: false,
       server: {
-        baseDir: ['docs']
+        baseDir: ['./']
       }
     }),
     // http://localhost:8888
@@ -32,7 +32,7 @@ module.exports = {
   entry: `${__dirname}/src/index.tsx`,
 
   output: {
-    path: `${__dirname}/docs`,
+    path: `${__dirname}/build`,
     filename: 'bundle.js',
   },
 
@@ -76,7 +76,7 @@ module.exports = {
 
   plugins: [
     new HtmlWebpackPlugin({
-      filename: 'index.html',
+      filename: '../index.html',
       template: './src/index.pug',
     }),
     new CopyWebpackPlugin([
