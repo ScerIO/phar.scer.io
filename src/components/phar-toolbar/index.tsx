@@ -41,10 +41,8 @@ export default class PharToolbar extends React.Component<Props, {}> {
     }
   }
 
-  private handleModeChange = (_event, value) => {
-    console.log('handleModeChange', ModeType[value], value)
+  private handleModeChange = (_event, value) =>
     this.props.setMode(Number(value))
-  }
 
   public render(): JSX.Element {
     const { mode } = this.props
