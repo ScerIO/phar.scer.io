@@ -8,7 +8,7 @@ export enum ModeType {
   /**
    * Phar to zip
    */
-  unpack
+  unpack,
 }
 
 export const ModeActionName = 'MODE'

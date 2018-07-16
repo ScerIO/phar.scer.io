@@ -11,6 +11,11 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
 
+    "lib": [
+      "dom",
+      "es2015"
+    ],
+
     "baseUrl": "./",
     "paths": {
       "*": [

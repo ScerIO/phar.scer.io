@@ -1,5 +1,10 @@
-import { ModeAction, ModeActionName, ModeType } from 'actions/Mode'
+import {
+  InternetStatusAction,
+  InternetStatusActionName,
+  InternetStatusType,
+} from 'actions/InternetStatus'
 
-export type State = ModeType
+export type State = InternetStatusType
 
-export default (state: State = ModeType.unpack, action: ModeAction): State => (action.type === ModeActionName) ? action.payload : state
+export default (state: State = InternetStatusType.online, action: InternetStatusAction): State =>
+  (action.type === InternetStatusActionName) ? action.payload : state

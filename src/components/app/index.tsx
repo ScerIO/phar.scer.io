@@ -1,6 +1,6 @@
 import * as React from 'react'
+import { Dispatch } from 'react-redux'
 
-import Hidden from '@material-ui/core/Hidden'
 import Drawer from '@material-ui/core/Drawer'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
@@ -8,6 +8,7 @@ import Button from '@material-ui/core/Button'
 import MenuIcon from '@material-ui/icons/Menu'
 import IconButton from '@material-ui/core/IconButton'
 import Snackbar from '@material-ui/core/Snackbar'
+import withWidth, { isWidthUp, WithWidthProps } from '@material-ui/core/withWidth'
 
 import { ZipConverter, Archive, Compression } from 'phar'
 import { saveAs } from 'file-saver'
@@ -21,12 +22,15 @@ import DropArea from 'components/dropzone'
 import PackOptions from 'components/pack-options'
 
 import Styled from 'components/app/style'
+import debug from 'utils/debug'
+import { InternetStatusType, setInternetStatus } from 'actions/InternetStatus'
 
 interface StateProps {
   mode?: ModeType
   signature?: Signature
   compress?: boolean
   stub?: string
+  internetStatus?: InternetStatusType
 }
 
 interface State {
@@ -34,18 +38,27 @@ interface State {
   error: string | null
 }
 
-type Props = StateProps
+interface DispatchProps {
+  setInternetStatus?: typeof setInternetStatus
+}
 
-@connect(App.mapStateToProps)
-export default class App extends React.Component<Props, State> {
-  private hiddenLink: HTMLLinkElement
+type Props = StateProps & DispatchProps & WithWidthProps
 
+@connect(App.mapStateToProps, App.mapDispatchToProps)
+class App extends React.Component<Props, State> {
   static mapStateToProps(state: ApplicationState): StateProps {
     return {
+      internetStatus: state.internetStatus,
       mode: state.mode,
       signature: state.packOptions.signature,
       compress: state.packOptions.compress,
       stub: state.packOptions.stub,
+    }
+  }
+
+  static mapDispatchToProps(dispatch: Dispatch<DispatchProps>) {
+    return {
+      setInternetStatus: (internetStatus: InternetStatusType) => dispatch(setInternetStatus(internetStatus)),
     }
   }
 
@@ -55,67 +68,62 @@ export default class App extends React.Component<Props, State> {
   }
 
   public componentDidMount() {
-    /**
-     * TODO: Hide github button on offline
-     */
-    function updateOnlineStatus(_event) {
-      if (navigator.onLine) {
-        // handle online status
-        console.log('online')
-      } else {
-        // handle offline status
-        console.log('offline')
-      }
-    }
-
-    window.addEventListener('online', updateOnlineStatus)
-    window.addEventListener('offline', updateOnlineStatus)
+    window.addEventListener('online', this.updateOnlineStatus)
+    window.addEventListener('offline', this.updateOnlineStatus)
   }
 
-  private handleDrawerToggle = () => {
+  public componentWillUnmount() {
+    window.removeEventListener('online', this.updateOnlineStatus)
+    window.removeEventListener('offline', this.updateOnlineStatus)
+  }
+
+  private updateOnlineStatus = (_event) =>
+    this.props.setInternetStatus(navigator.onLine
+      ? InternetStatusType.online
+      : InternetStatusType.offline
+    )
+
+  private handleDrawerToggle = () =>
     this.setState({ mobileOpenDrawer: !this.state.mobileOpenDrawer })
-  }
 
-  private handleErrorClose = (_event, reason) => {
-    if (reason === 'clickaway') return
-
-    this.setState({ error: null })
-  }
+  private handleErrorClose = (_event, reason) =>
+    (reason !== 'clickaway') && this.setState({ error: null })
 
   public render(): JSX.Element {
-    const noHideDrawer = this.props.mode === ModeType.pack,
+    const
+      {
+        internetStatus,
+        mode,
+      } = this.props,
       { error } = this.state,
+      noHideDrawer = mode === ModeType.pack,
+      online = internetStatus === InternetStatusType.online,
+      largeScreen = isWidthUp('sm', this.props.width),
       drawer = (
         <Styled.DrawerContent>
           <PackOptions />
         </Styled.DrawerContent>
       )
 
+    /**
+     * TODO: transfer Drawer to independent component
+     */
+
     return (
       <>
-        <Hidden mdUp>
-          <Drawer
-            variant='temporary'
-            anchor='left'
-            open={this.state.mobileOpenDrawer}
-            onClose={this.handleDrawerToggle}>
-            {drawer}
-          </Drawer>
-        </Hidden>
-        <Hidden smDown>
-          <Drawer
-            variant={noHideDrawer ? 'permanent' : 'temporary'}
-            open={noHideDrawer}>
-            {drawer}
-          </Drawer>
-        </Hidden>
+        <Drawer
+          variant={noHideDrawer && largeScreen ? 'permanent' : 'temporary'}
+          anchor='left'
+          open={largeScreen ? noHideDrawer : this.state.mobileOpenDrawer}
+          onClose={largeScreen ? null : this.handleDrawerToggle}>
+          {drawer}
+        </Drawer>
 
         <Styled.Content drawerOffset={noHideDrawer}>
-          <Styled.HiddenLink target='_blank' innerRef={(hiddenLink: HTMLLinkElement) => { this.hiddenLink = hiddenLink }} />
           <Styled.OverlayMain>
             <AppBar position='static'>
               <Toolbar>
-                <Hidden mdUp>
+                {!largeScreen &&
                   <IconButton
                     disabled={!noHideDrawer}
                     color='inherit'
@@ -123,11 +131,18 @@ export default class App extends React.Component<Props, State> {
                     onClick={this.handleDrawerToggle}>
                     <MenuIcon />
                   </IconButton>
-                </Hidden>
+                }
                 <Styled.Title variant='title' color='inherit'>
                   PHAR
-              </Styled.Title>
-                <Button color='inherit' onClick={() => this.openLink('https://github.com/pharjs/pharjs.github.io')} >GitHub</Button>
+                </Styled.Title>
+                {
+                  online &&
+                  <Button
+                    color='inherit'
+                    onClick={() => window.open('https://github.com/pharjs/pharjs.github.io', '_blank')} >
+                    GitHub
+                    </Button>
+                }
               </Toolbar>
             </AppBar>
             <PharToolbar />
@@ -143,7 +158,7 @@ export default class App extends React.Component<Props, State> {
             vertical: 'bottom',
             horizontal: 'right',
           }}
-          open={!!error}
+          open={Boolean(error)}
           autoHideDuration={5000}
           onClose={this.handleErrorClose}
           ContentProps={{
@@ -155,12 +170,6 @@ export default class App extends React.Component<Props, State> {
     )
   }
 
-  private openLink(href: string) {
-    const { hiddenLink } = this
-    hiddenLink.href = href
-    hiddenLink.click()
-  }
-
   private process(files: File[]) {
     files.forEach((file: File) => this.props.mode === ModeType.unpack ? this.pharToZip(file) : this.zipToPhar(file))
   }
@@ -169,21 +178,20 @@ export default class App extends React.Component<Props, State> {
     const reader = new FileReader(),
       fileName = file.name.substring(0, file.name.length - 4) + 'zip'
 
-    reader.onload = () => {
+    reader.onload = async () => {
       try {
         const archive = new Archive()
-        archive.loadPharData(new Uint8Array(reader.result))
-        ZipConverter
-          .toZip(archive)
-          .then((data) => data.generateAsync({
+          .loadPharData(new Uint8Array(reader.result)),
+          data = await ZipConverter.toZip(archive),
+          zip = await data.generateAsync({
             type: 'uint8array'
-          }))
-          .then((zip) => saveAs(new Blob([zip], {
-            type: 'application/zip'
-          }), fileName))
+          })
+        saveAs(new Blob([zip], {
+          type: 'application/zip'
+        }), fileName)
       } catch (error) {
         this.setState({ error: error.message })
-        console.error(error)
+        debug(() => console.error(error))
       }
     }
 
@@ -192,30 +200,30 @@ export default class App extends React.Component<Props, State> {
 
   private zipToPhar(file: File) {
     const {
-        signature,
-        stub,
-        compress,
-      } = this.props,
+      signature,
+      stub,
+      compress,
+    } = this.props,
       reader = new FileReader(),
       fileName = file.name.substring(0, file.name.length - 3) + 'phar'
 
-    reader.onload = () => {
+    reader.onload = async () => {
       try {
-        ZipConverter
+        const phar = await ZipConverter
           .toPhar(new Uint8Array(reader.result), compress && Compression.GZ)
-          .then((phar: Archive) => {
-            phar.setSignatureType(signature)
-            phar.setStub(stub)
-            saveAs(new Blob([phar.savePharData(true)], {
-              type: 'application/phar'
-            }), fileName)
-          })
+        phar.setSignatureType(signature)
+        phar.setStub(stub)
+        saveAs(new Blob([phar.savePharData(true)], {
+          type: 'application/phar'
+        }), fileName)
       } catch (error) {
         this.setState({ error: error.message })
-        console.error(error)
+        debug(() => console.error(error))
       }
     }
 
     reader.readAsArrayBuffer(file)
   }
 }
+
+export default withWidth()(App)
