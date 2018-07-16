@@ -1,3 +1,5 @@
+import { BaseAction } from './Base'
+
 export enum ModeType {
   /**
    * Files to phar
@@ -11,11 +13,14 @@ export enum ModeType {
 
 export const ModeActionName = 'MODE'
 
-export interface ModeAction {
-  type: typeof ModeActionName,
+export interface ModeAction extends BaseAction {
   payload: ModeType
 }
 
-export const setMode = (mode: ModeType) => {
-  return { type: ModeActionName, payload: mode } as ModeAction
+/**
+ * @param {ModeType} payload - Mode
+ * @returns {ModeAction}
+ */
+export const setMode = (payload: ModeType) => {
+  return { type: ModeActionName, payload } as ModeAction
 }

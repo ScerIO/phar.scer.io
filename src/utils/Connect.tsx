@@ -1,6 +1,6 @@
 import * as Redux from 'redux'
 import { connect } from 'react-redux'
-import { ApplicationState } from '../reducers/Root'
+import { ApplicationState } from 'reducers/Root'
 
 export interface MapPropsParam<TProps> {
   (state: ApplicationState, ownProps?: TProps): TProps

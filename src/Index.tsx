@@ -5,8 +5,8 @@ import { injectGlobal } from 'styled-components'
 import { MuiThemeProvider } from '@material-ui/core/styles'
 
 import { Provider } from 'react-redux'
-import RootStore from './store/Root'
-import App from './components/app'
+import RootStore from 'store/Root'
+import App from 'components/app'
 
 import theme from './theme'
 

@@ -20,7 +20,7 @@ import PharToolbar from 'components/phar-toolbar'
 import DropArea from 'components/dropzone'
 import PackOptions from 'components/pack-options'
 
-import Styled from './style'
+import Styled from 'components/app/style'
 
 interface StateProps {
   mode?: ModeType
@@ -52,6 +52,24 @@ export default class App extends React.Component<Props, State> {
   public state: State = {
     mobileOpenDrawer: false,
     error: null,
+  }
+
+  public componentDidMount() {
+    /**
+     * TODO: Hide github button on offline
+     */
+    function updateOnlineStatus(_event) {
+      if (navigator.onLine) {
+        // handle online status
+        console.log('online')
+      } else {
+        // handle offline status
+        console.log('offline')
+      }
+    }
+
+    window.addEventListener('online', updateOnlineStatus)
+    window.addEventListener('offline', updateOnlineStatus)
   }
 
   private handleDrawerToggle = () => {

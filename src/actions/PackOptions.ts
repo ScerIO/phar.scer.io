@@ -1,3 +1,4 @@
+import { BaseAction } from './Base'
 import { Signature } from 'phar'
 export { Signature }
 
@@ -6,18 +7,15 @@ export const
   CompressActionName = 'COMPRESS',
   StubActionName = 'STUB'
 
-interface SignatureAction {
-  type: typeof SignatureActionName
+interface SignatureAction extends BaseAction {
   payload: Signature
 }
 
-interface CompressAction {
-  type: typeof CompressActionName
+interface CompressAction extends BaseAction {
   payload: boolean
 }
 
-interface StubAction {
-  type: typeof StubActionName
+interface StubAction extends BaseAction {
   payload: string
 }
 

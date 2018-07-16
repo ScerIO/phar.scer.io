@@ -25,11 +25,12 @@ type Action = SignatureAction | CompressAction | StubAction
 export default (state: State = InitialState, action: Action): State => {
   switch (action.type) {
     case SignatureActionName:
-      return { ...state, signature: action.payload }
+      return { ...state, signature: action.payload } as State
     case CompressActionName:
-      return { ...state, compress: action.payload }
+      return { ...state, compress: action.payload } as State
+      case CompressActionName:
     case StubActionName:
-      return { ...state, stub: action.payload }
+      return { ...state, stub: action.payload } as State
   }
   return state
 }
