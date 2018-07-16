@@ -2,26 +2,18 @@ import * as React from 'react'
 import Typography from '@material-ui/core/Typography'
 import Styled from './style'
 
-interface DropAreaProps {
+interface Props {
   title: string
   onSuccess: (files: File[]) => void
 }
 
-interface DropAreaState {
+interface State {
   elevation: number
 }
 
-export default class DropArea extends React.Component<DropAreaProps, DropAreaState> {
-  public state: DropAreaState = {
+export default class DropArea extends React.Component<Props, State> {
+  public state: State = {
     elevation: 1
-  }
-
-  private onDragEnter = () => this.setState({ elevation: 3 })
-  private onDragLeave = () => this.setState({ elevation: 1 })
-
-  private onDrop = (files: File[]) => {
-    this.onDragLeave()
-    this.props.onSuccess(files)
   }
 
   public render() {
@@ -39,4 +31,11 @@ export default class DropArea extends React.Component<DropAreaProps, DropAreaSta
     )
   }
 
+  private onDragEnter = () => this.setState({ elevation: 3 })
+  private onDragLeave = () => this.setState({ elevation: 1 })
+
+  private onDrop = (files: File[]) => {
+    this.onDragLeave()
+    this.props.onSuccess(files)
+  }
 }

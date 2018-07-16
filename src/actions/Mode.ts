@@ -21,6 +21,6 @@ export interface ModeAction extends BaseAction {
  * @param {ModeType} payload - Mode
  * @returns {ModeAction}
  */
-export const setMode = (payload: ModeType) => {
-  return { type: ModeActionName, payload } as ModeAction
-}
+export const setMode = (payload: ModeType) => ({
+  type: ModeActionName, payload,
+})

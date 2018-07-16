@@ -1,12 +1,6 @@
 import * as React from 'react'
 import { Dispatch } from 'react-redux'
 
-import Drawer from '@material-ui/core/Drawer'
-import AppBar from '@material-ui/core/AppBar'
-import Toolbar from '@material-ui/core/Toolbar'
-import Button from '@material-ui/core/Button'
-import MenuIcon from '@material-ui/icons/Menu'
-import IconButton from '@material-ui/core/IconButton'
 import Snackbar from '@material-ui/core/Snackbar'
 import withWidth, { isWidthUp, WithWidthProps } from '@material-ui/core/withWidth'
 
@@ -17,13 +11,15 @@ import { connect } from 'utils/Connect'
 import { ApplicationState } from 'reducers/Root'
 import { ModeType } from 'actions/Mode'
 import { Signature } from 'actions/PackOptions'
-import PharToolbar from 'components/phar-toolbar'
+import PharToolbar from 'components/mode-toolbar'
 import DropArea from 'components/dropzone'
 import PackOptions from 'components/pack-options'
 
 import Styled from 'components/app/style'
 import debug from 'utils/debug'
 import { InternetStatusType, setInternetStatus } from 'actions/InternetStatus'
+import Drawer from 'components/drawer'
+import AppBar from 'components/app-toolbar'
 
 interface StateProps {
   mode?: ModeType
@@ -34,7 +30,6 @@ interface StateProps {
 }
 
 interface State {
-  mobileOpenDrawer: boolean
   error: string | null
 }
 
@@ -63,7 +58,6 @@ class App extends React.Component<Props, State> {
   }
 
   public state: State = {
-    mobileOpenDrawer: false,
     error: null,
   }
 
@@ -83,9 +77,6 @@ class App extends React.Component<Props, State> {
       : InternetStatusType.offline
     )
 
-  private handleDrawerToggle = () =>
-    this.setState({ mobileOpenDrawer: !this.state.mobileOpenDrawer })
-
   private handleErrorClose = (_event, reason) =>
     (reason !== 'clickaway') && this.setState({ error: null })
 
@@ -98,55 +89,22 @@ class App extends React.Component<Props, State> {
       { error } = this.state,
       noHideDrawer = mode === ModeType.pack,
       online = internetStatus === InternetStatusType.online,
-      largeScreen = isWidthUp('sm', this.props.width),
-      drawer = (
-        <Styled.DrawerContent>
-          <PackOptions />
-        </Styled.DrawerContent>
-      )
-
-    /**
-     * TODO: transfer Drawer to independent component
-     */
+      largeScreen = isWidthUp('sm', this.props.width)
 
     return (
       <>
         <Drawer
-          variant={noHideDrawer && largeScreen ? 'permanent' : 'temporary'}
-          anchor='left'
-          open={largeScreen ? noHideDrawer : this.state.mobileOpenDrawer}
-          onClose={largeScreen ? null : this.handleDrawerToggle}>
-          {drawer}
+          noHideDrawer={noHideDrawer}
+          largeScreen={largeScreen}>
+          <PackOptions />
         </Drawer>
 
         <Styled.Content drawerOffset={noHideDrawer}>
-          <Styled.OverlayMain>
-            <AppBar position='static'>
-              <Toolbar>
-                {!largeScreen &&
-                  <IconButton
-                    disabled={!noHideDrawer}
-                    color='inherit'
-                    aria-label='open drawer'
-                    onClick={this.handleDrawerToggle}>
-                    <MenuIcon />
-                  </IconButton>
-                }
-                <Styled.Title variant='title' color='inherit'>
-                  PHAR
-                </Styled.Title>
-                {
-                  online &&
-                  <Button
-                    color='inherit'
-                    onClick={() => window.open('https://github.com/pharjs/pharjs.github.io', '_blank')} >
-                    GitHub
-                    </Button>
-                }
-              </Toolbar>
-            </AppBar>
-            <PharToolbar />
-          </Styled.OverlayMain>
+          <AppBar
+            noHideDrawer={noHideDrawer}
+            largeScreen={largeScreen}
+            online={online}/>
+          <PharToolbar />
 
           <Styled.Main>
             <DropArea title='Select file or drop here' onSuccess={(files: File[]) => this.process(files)} />
