@@ -12,8 +12,10 @@
     "emitDecoratorMetadata": true,
 
     "lib": [
+      "webworker",
       "dom",
-      "es2015"
+      "es2015",
+      "es2016.array.include"
     ],
 
     "baseUrl": "./",

@@ -1,4 +1,6 @@
 const webpack = require('webpack'),
+  // ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin'),
+  OfflinePlugin = require('offline-plugin'),
   HtmlWebpackPlugin = require('html-webpack-plugin'),
   CopyWebpackPlugin = require('copy-webpack-plugin'),
   BrowserSyncPlugin = require('browser-sync-webpack-plugin'),
@@ -8,7 +10,7 @@ const webpack = require('webpack'),
   path = require('path')
 
 const mode = process.env.NODE_ENV || 'development',
-      plugins = []
+  plugins = []
 
 mode === 'development' &&
   plugins.push(
@@ -18,7 +20,7 @@ mode === 'development' &&
       port: 3000,
       open: false,
       server: {
-        baseDir: ['./']
+        baseDir: ['./build']
       }
     }),
     // http://localhost:8888
@@ -54,7 +56,7 @@ module.exports = {
   module: {
     rules: [{
         test: /\.tsx?$/,
-        loader: ['ts-loader']
+        loader: ['ts-loader'],
       },
       {
         test: /.pug$/,
@@ -76,13 +78,45 @@ module.exports = {
   },
 
   plugins: [
+    new OfflinePlugin({
+      safeToUseOptionalCaches: true,
+      caches: {
+        main: [
+          'bundle.js',
+          ':rest:',
+        ],
+        additional: [
+          ':externals:',
+        ],
+      },
+      externals: [
+        '/manifest.json',
+        '/browserconfig.xml',
+        '/assets/**/*.*',
+        '/',
+      ],
+      ServiceWorker: {
+        events: true,
+        navigateFallbackURL: '/',
+        publicPath: '/sw.js'
+      },
+    }),
     new HtmlWebpackPlugin({
-      filename: '../index.html',
+      // filename: '../index.html',
       template: './src/index.pug',
     }),
     new CopyWebpackPlugin([
       // { from: 'src/assets/locales', to: 'locales' },
-      { from: 'src/manifest.json', to: './' },
+      {
+        from: 'src/manifest.json',
+        to: './',
+      },{
+        from: 'src/browserconfig.xml',
+        to: './',
+      },{
+        from: 'src/assets/icons',
+        to: './assets/icons',
+      },
     ]),
     new webpack.EnvironmentPlugin(['NODE_ENV']),
     ...plugins
