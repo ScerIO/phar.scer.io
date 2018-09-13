@@ -1,5 +1,4 @@
 const webpack = require('webpack'),
-  // ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin'),
   OfflinePlugin = require('offline-plugin'),
   HtmlWebpackPlugin = require('html-webpack-plugin'),
   CopyWebpackPlugin = require('copy-webpack-plugin'),
@@ -31,11 +30,13 @@ mode === 'development' &&
 
 module.exports = {
   mode,
-  entry: `${__dirname}/src/index.tsx`,
+  entry: {
+    app: `${__dirname}/src/index.tsx`,
+  },
 
   output: {
     path: `${__dirname}/build`,
-    filename: 'bundle.js',
+    filename: '[name].bundle.js',
   },
 
   devtool: mode === 'production' ? false : 'source-map',
@@ -55,26 +56,36 @@ module.exports = {
 
   module: {
     rules: [{
-        test: /\.tsx?$/,
-        loader: ['ts-loader'],
+      test: /\.tsx?$/,
+      loader: ['ts-loader'],
+    },
+    {
+      test: /.pug$/,
+      loader: 'pug-loader',
+    },
+    {
+      test: /\.(ico|svg|png|jpg)$/,
+      loader: 'file-loader',
+      options: {
+        name: '[name].[ext]',
+        outputPath: 'assets/',
       },
-      {
-        test: /.pug$/,
-        loader: 'pug-loader',
-      },
-      {
-        test: /\.(ico|svg|png|jpg)$/,
-        loader: 'file-loader',
-        options: {
-          name: '[name].[ext]',
-          outputPath: 'assets/',
-        },
-      },
+    },
     ]
   },
 
   optimization: {
     minimize: mode === 'production',
+    splitChunks: {
+      cacheGroups: {
+        vendor: {
+          test: /node_modules/,
+          chunks: 'initial',
+          name: 'vendor',
+          enforce: true
+        },
+      }
+    },
   },
 
   plugins: [
@@ -102,7 +113,6 @@ module.exports = {
       },
     }),
     new HtmlWebpackPlugin({
-      // filename: '../index.html',
       template: './src/index.pug',
     }),
     new CopyWebpackPlugin([
@@ -110,10 +120,10 @@ module.exports = {
       {
         from: 'src/manifest.json',
         to: './',
-      },{
+      }, {
         from: 'src/browserconfig.xml',
         to: './',
-      },{
+      }, {
         from: 'src/assets/icons',
         to: './assets/icons',
       },

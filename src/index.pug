@@ -1,7 +1,7 @@
 doctype html
 html( lang='en' )
   head
-    title PHAR
+    title PHAR Converter
     <!--[if IE]>
       meta(http-equiv='X-UA-Compatible', content='IE=Edge, chrome=1')
     <![endif]-->
@@ -18,7 +18,8 @@ html( lang='en' )
     meta(name='mobile-web-app-capable', content='yes')
     meta(name='application-name', content='PHAR')
     meta(name='theme-color', content='#EEEEEE')
-    meta(name='description', content='Pack and unpack PHAR arhives')
+    meta(name='description', content='Pack and unpack phar archives online. Convert PHAR files to ZIP and ZIP to PHAR. Free online convertor.')
+    meta(name='keywords', content='phar, unphar, phar2zip, zip2phar, php archive, phar archive, unpack phar, pack phar, phar convertor, php archive converter, phar online')
     link(rel='shortcut icon', href='/assets/icons/favicon.ico', type='image/x-icon')
     link(rel='shortcut icon', href='/assets/icons/favicon.png', type='image/png')
     link(rel='manifest', href='/manifest.json')
@@ -40,4 +41,11 @@ html( lang='en' )
   body
     #root
     button(hidden='')#wapp Show Prompt
-    noscript Please enable JavaScript
+    noscript Please enable JavaScript in browser settings
+    //- Global site tag (gtag.js) - Google Analytics
+    script(async, src='https://www.googletagmanager.com/gtag/js?id=UA-125755321-1')
+    script.
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-125755321-1');
