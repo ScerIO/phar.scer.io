@@ -139,7 +139,7 @@ class App extends React.Component<Props, State> {
     reader.onload = async () => {
       try {
         const archive = new Archive()
-          .loadPharData(new Uint8Array(reader.result)),
+          .loadPharData(new Uint8Array(reader.result as ArrayBuffer)),
           data = await ZipConverter.toZip(archive),
           zip = await data.generateAsync({
             type: 'uint8array'
@@ -168,7 +168,7 @@ class App extends React.Component<Props, State> {
     reader.onload = async () => {
       try {
         const phar = await ZipConverter
-          .toPhar(new Uint8Array(reader.result), compress && Compression.GZ)
+          .toPhar(new Uint8Array(reader.result as ArrayBuffer), compress && Compression.GZ)
         phar.setSignatureType(signature)
         phar.setStub(stub)
         saveAs(new Blob([phar.savePharData(true)], {

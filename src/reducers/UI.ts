@@ -1,7 +1,7 @@
 import {
   UIDrawerStatusActionName,
   UIDrawerStatusAction,
-} from 'actions/ui'
+} from 'actions/UI'
 
 export interface State {
   drawerStatus?: boolean

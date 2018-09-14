@@ -1,6 +1,6 @@
 import { Dispatch, connect } from 'react-redux'
-import { State as StateProps } from 'reducers/ui'
-import { setUIDrawerStatus } from 'actions/ui'
+import { State as StateProps } from 'reducers/UI'
+import { setUIDrawerStatus } from 'actions/UI'
 import { ApplicationState } from 'reducers/Root'
 
 export interface DispatchProps {
