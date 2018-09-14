@@ -2,7 +2,7 @@ import * as React from 'react'
 import { Dispatch } from 'react-redux'
 
 import Snackbar from '@material-ui/core/Snackbar'
-import withWidth, { isWidthUp, WithWidthProps } from '@material-ui/core/withWidth'
+import withWidth, { isWidthUp, WithWidth } from '@material-ui/core/withWidth'
 
 import { ZipConverter, Archive, Compression } from 'phar'
 import { saveAs } from 'file-saver'
@@ -37,7 +37,7 @@ interface DispatchProps {
   setInternetStatus?: typeof setInternetStatus
 }
 
-type Props = StateProps & DispatchProps & WithWidthProps
+type Props = StateProps & DispatchProps & WithWidth
 
 @connect(App.mapStateToProps, App.mapDispatchToProps)
 class App extends React.Component<Props, State> {

@@ -93,7 +93,8 @@ module.exports = {
       safeToUseOptionalCaches: true,
       caches: {
         main: [
-          'bundle.js',
+          'app.bundle.js',
+          'vendor.bundle.js',
           ':rest:',
         ],
         additional: [
