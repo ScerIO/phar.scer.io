@@ -1,4 +1,5 @@
 import * as React from 'react'
+import Grid from '@material-ui/core/Grid'
 import Radio from '@material-ui/core/Radio'
 import RadioGroup from '@material-ui/core/RadioGroup'
 import Switch from '@material-ui/core/Switch'
@@ -8,8 +9,6 @@ import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Divider from '@material-ui/core/Divider'
 
 import withPackOptions, { Props, Signature } from 'containers/pack-options'
-
-import Styled from './style'
 
 interface State {
   stub: string
@@ -24,8 +23,8 @@ export class PackOptions extends React.Component<Props, State> {
     const { stub } = this.state
 
     return (
-      <Styled.Container>
-        <Styled.FormContainer>
+      <>
+        <Grid>
           <FormLabel component='legend'>Signature</FormLabel>
           <RadioGroup
             aria-label='signature'
@@ -38,9 +37,9 @@ export class PackOptions extends React.Component<Props, State> {
             <FormControlLabel value={Signature.SHA256.toString()} control={<Radio />} label='SHA256' />
             <FormControlLabel value={Signature.SHA512.toString()} control={<Radio />} label='SHA512' />
           </RadioGroup>
-        </Styled.FormContainer>
+        </Grid>
         <Divider />
-        <Styled.FormContainer>
+        <Grid>
           <FormControlLabel
             control={
               <Switch
@@ -50,10 +49,12 @@ export class PackOptions extends React.Component<Props, State> {
             }
             label='Compress'
           />
-        </Styled.FormContainer>
+        </Grid>
         <Divider />
-        <Styled.FormContainer>
+        <Grid>
           <TextField
+            fullWidth
+            variant='filled'
             id='stub'
             label='Stub'
             value={stub}
@@ -62,8 +63,8 @@ export class PackOptions extends React.Component<Props, State> {
             onBlur={this.handleStubBlur}
             margin='normal'
           />
-        </Styled.FormContainer>
-      </Styled.Container>
+        </Grid>
+      </>
     )
   }
 

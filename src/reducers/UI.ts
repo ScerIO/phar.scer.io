@@ -1,22 +1,22 @@
 import {
-  UIDrawerStatusActionName,
-  UIDrawerStatusAction,
+  UISettingsModalActionName,
+  UISettingsModalAction,
 } from 'actions/UI'
 
 export interface State {
-  drawerStatus?: boolean
+  settingsModal?: boolean
 }
 
 const InitialState: State = {
-  drawerStatus: false,
+  settingsModal: false,
 }
 
-type Action = UIDrawerStatusAction
+type Action = UISettingsModalAction
 
 export default (state: State = InitialState, action: Action): State => {
   switch (action.type) {
-    case UIDrawerStatusActionName:
-      return { ...state, drawerStatus: action.payload } as State
+    case UISettingsModalActionName:
+      return { ...state, settingsModal: action.payload } as State
   }
   return state
 }

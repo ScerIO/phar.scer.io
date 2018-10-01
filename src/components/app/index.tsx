@@ -1,28 +1,31 @@
 import * as React from 'react'
 import { Dispatch } from 'react-redux'
 
+import Grid from '@material-ui/core/Grid'
 import Snackbar from '@material-ui/core/Snackbar'
-import withWidth, { isWidthUp, WithWidth } from '@material-ui/core/withWidth'
+import Typography from '@material-ui/core/Typography'
 
 import { ZipConverter, Archive, Compression } from 'phar'
 import { saveAs } from 'file-saver'
 
 import { connect } from 'utils/Connect'
 import { ApplicationState } from 'reducers/Root'
-import { ModeType } from 'actions/Mode'
 import { Signature } from 'actions/PackOptions'
-import PharToolbar from 'components/mode-toolbar'
 import DropArea from 'components/dropzone'
 import PackOptions from 'components/pack-options'
+import Settings from 'components/settings'
 
-import Styled from 'components/app/style'
 import debug from 'utils/debug'
 import { InternetStatusType, setInternetStatus } from 'actions/InternetStatus'
-import Drawer from 'components/drawer'
 import AppBar from 'components/app-toolbar'
 
+import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles'
+import createStyles from '@material-ui/core/styles/createStyles'
+import Grow from '@material-ui/core/Grow'
+import { translate, InjectedTranslateProps } from 'react-i18next'
+import withWidth, { isWidthUp, WithWidth } from '@material-ui/core/withWidth'
+
 interface StateProps {
-  mode?: ModeType
   signature?: Signature
   compress?: boolean
   stub?: string
@@ -31,20 +34,31 @@ interface StateProps {
 
 interface State {
   error: string | null
+  ready: boolean
 }
 
 interface DispatchProps {
   setInternetStatus?: typeof setInternetStatus
 }
 
-type Props = StateProps & DispatchProps & WithWidth
+type Props = StateProps & DispatchProps & WithWidth & WithStyles<typeof styles> & InjectedTranslateProps
+
+const styles = createStyles({
+  container: {
+    minHeight: '100vh',
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  content: {
+    flex: 1,
+  },
+})
 
 @connect(App.mapStateToProps, App.mapDispatchToProps)
 class App extends React.Component<Props, State> {
   static mapStateToProps(state: ApplicationState): StateProps {
     return {
       internetStatus: state.internetStatus,
-      mode: state.mode,
       signature: state.packOptions.signature,
       compress: state.packOptions.compress,
       stub: state.packOptions.stub,
@@ -59,11 +73,13 @@ class App extends React.Component<Props, State> {
 
   public state: State = {
     error: null,
+    ready: false,
   }
 
   public componentDidMount() {
     window.addEventListener('online', this.updateOnlineStatus)
     window.addEventListener('offline', this.updateOnlineStatus)
+    this.setState({ready: true})
   }
 
   public componentWillUnmount() {
@@ -84,32 +100,39 @@ class App extends React.Component<Props, State> {
     const
       {
         internetStatus,
-        mode,
+        classes,
+        width,
+        t,
       } = this.props,
-      { error } = this.state,
-      noHideDrawer = mode === ModeType.pack,
-      online = internetStatus === InternetStatusType.online,
-      largeScreen = isWidthUp('sm', this.props.width)
+      {
+        error,
+        ready,
+      } = this.state,
+      online = internetStatus === InternetStatusType.online
 
     return (
-      <>
-        <Drawer
-          noHideDrawer={noHideDrawer}
-          largeScreen={largeScreen}>
+      <Grid className={classes.container}>
+        <AppBar online={online}/>
+
+        <Settings>
           <PackOptions />
-        </Drawer>
+        </Settings>
 
-        <Styled.Content drawerOffset={noHideDrawer}>
-          <AppBar
-            noHideDrawer={noHideDrawer}
-            largeScreen={largeScreen}
-            online={online}/>
-          <PharToolbar />
-
-          <Styled.Main>
-            <DropArea title='Select file or drop here' onSuccess={(files: File[]) => this.process(files)} />
-          </Styled.Main>
-        </Styled.Content>
+        <Grid
+          container
+          alignItems='center'
+          justify='center'
+          className={classes.content}>
+          <Grow in={ready} timeout={1200}>
+            <Grid item>
+              <DropArea onSuccess={(files: File[]) => this.process(files)}>
+                <Typography variant='headline' align='center'>
+                  {isWidthUp('sm', width) ? t('select-or-drop') : t('select-file')}
+                </Typography>
+              </DropArea>
+            </Grid>
+          </Grow>
+        </Grid>
 
         <Snackbar
           anchorOrigin={{
@@ -122,15 +145,23 @@ class App extends React.Component<Props, State> {
           ContentProps={{
             'aria-describedby': 'message-id',
           }}
-          message={<span id="message-id">Error {error}</span>}
-        />
-      </>
+          message={<span id="message-id">{error}</span>}/>
+      </Grid>
     )
   }
 
-  private process(files: File[]) {
-    files.forEach((file: File) => this.props.mode === ModeType.unpack ? this.pharToZip(file) : this.zipToPhar(file))
-  }
+  private process = (files: File[]) =>
+    files.forEach((file: File) => {
+      const extension = file.name.split('.').pop()
+      switch(extension) {
+        case 'phar':
+          return this.pharToZip(file)
+        case 'zip':
+          return this.zipToPhar(file)
+        default:
+          this.setState({error: `Error: file "${file.name}" has an unsupported format ".${extension}"`})
+      }
+    })
 
   private pharToZip(file: File) {
     const reader = new FileReader(),
@@ -184,4 +215,4 @@ class App extends React.Component<Props, State> {
   }
 }
 
-export default withWidth()(App)
+export default translate('translations')(withStyles(styles)(withWidth()(App)))

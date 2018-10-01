@@ -2,48 +2,48 @@ import * as React from 'react'
 import MaterialAppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import Button from '@material-ui/core/Button'
-import MenuIcon from '@material-ui/icons/Menu'
+import Typography from '@material-ui/core/Typography'
 import IconButton from '@material-ui/core/IconButton'
+import SettingsIcon from '@material-ui/icons/Settings'
+import Collapse from '@material-ui/core/Slide';
+import withWidth, { WithWidth, isWidthUp } from '@material-ui/core/withWidth'
 
-import Styled from './style'
-import withUIDrawerStatus, { Props as StateProps } from 'containers/drawer-status'
+import withUISettingsModal, { Props as StateProps } from 'containers/settings-modal'
+import { translate, InjectedTranslateProps } from 'react-i18next'
 
-interface Props extends StateProps {
-  noHideDrawer: boolean
-  largeScreen: boolean
+interface Props extends StateProps, WithWidth, InjectedTranslateProps {
   online: boolean
 }
 
 const AppBar = ({
-  noHideDrawer,
-  largeScreen,
   online,
-  drawerStatus,
-  setUIDrawerStatus,
+  settingsModal,
+  setUISettingsModal,
+  width,
+  t,
 }: Props) =>
-  <MaterialAppBar position='static'>
-    <Toolbar>
-      {!largeScreen &&
-        <IconButton
-          disabled={!noHideDrawer}
-          color='inherit'
-          aria-label='open drawer'
-          onClick={() => setUIDrawerStatus(!drawerStatus)}>
-          <MenuIcon />
-        </IconButton>
-      }
-      <Styled.Title variant='title' color='inherit'>
-        PHAR
-      </Styled.Title>
-      {
-        online &&
-          <Button
-            color='inherit'
-            onClick={() => window.open('https://github.com/pharjs/pharjs.github.io', '_blank')} >
-            GitHub
-          </Button>
-      }
-    </Toolbar>
-  </MaterialAppBar>
+  <Collapse direction='down' in={true} timeout={1200}>
+    <MaterialAppBar position='static'>
+        <Toolbar>
+          <Typography variant='title' color='inherit' style={{flexGrow: 1}}>
+            PHAR {isWidthUp('sm', width) && ' ' + t('title')}
+          </Typography>
+          {
+            online &&
+              <Button
+                color='inherit'
+                onClick={() => window.open('https://github.com/pharjs/pharjs.github.io', '_blank')} >
+                GitHub
+              </Button>
+          }
+          <IconButton
+              color='inherit'
+              aria-label='Pack settings'
+              onClick={() => setUISettingsModal(!settingsModal)}>
+            <SettingsIcon />
+          </IconButton>
+        </Toolbar>
+    </MaterialAppBar>
+  </Collapse>
 
-export default withUIDrawerStatus(AppBar)
+export default withUISettingsModal(translate('translations')(withWidth()(AppBar)))
