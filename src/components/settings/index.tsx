@@ -8,7 +8,9 @@ import withMobileDialog from '@material-ui/core/withMobileDialog'
 import withUISettingsModal, { Props as SettingsModlProps } from 'containers/settings-modal'
 
 interface Props extends SettingsModlProps {
-  fullScreen: boolean
+  fullScreen?: boolean
+  title: string
+  closeButtonText: string
 }
 
 class Settings extends React.Component<Props> {
@@ -21,6 +23,8 @@ class Settings extends React.Component<Props> {
       fullScreen,
       settingsModal: open,
       children,
+      title,
+      closeButtonText,
     } = this.props
 
     return (
@@ -31,13 +35,13 @@ class Settings extends React.Component<Props> {
         open={open}
         onClose={this.handleClose}
         aria-labelledby="responsive-dialog-title">
-        <DialogTitle id="responsive-dialog-title">{"Pack settings"}</DialogTitle>
+        <DialogTitle id="responsive-dialog-title">{title}</DialogTitle>
         <DialogContent>
           {children}
         </DialogContent>
         <DialogActions>
           <Button onClick={this.handleClose} autoFocus>
-            Close
+            {closeButtonText}
           </Button>
         </DialogActions>
       </Dialog>
@@ -45,4 +49,4 @@ class Settings extends React.Component<Props> {
   }
 }
 
-export default withMobileDialog()(withUISettingsModal(Settings))
+export default withMobileDialog<Props>()(withUISettingsModal(Settings))

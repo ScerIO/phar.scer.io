@@ -117,5 +117,9 @@ module.exports = {
     ]),
     new webpack.EnvironmentPlugin(['NODE_ENV']),
     ...plugins,
-  ]
+  ],
+
+  devServer: {
+    host: '0.0.0.0',
+  },
 }

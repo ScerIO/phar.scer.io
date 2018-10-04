@@ -8,11 +8,14 @@ import FormLabel from '@material-ui/core/FormLabel'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Divider from '@material-ui/core/Divider'
 
-import withPackOptions, { Props, Signature } from 'containers/pack-options'
+import withPackOptions, { Props as PackProps, Signature } from 'containers/pack-options'
+import { InjectedTranslateProps, translate } from 'react-i18next'
 
 interface State {
   stub: string
 }
+
+type Props = PackProps & InjectedTranslateProps
 
 export class PackOptions extends React.Component<Props, State> {
   public state = {
@@ -20,34 +23,31 @@ export class PackOptions extends React.Component<Props, State> {
   }
 
   public render(): JSX.Element {
+    const { t } = this.props
     const { stub } = this.state
 
     return (
       <>
         <Grid>
-          <FormLabel component='legend'>Signature</FormLabel>
+          <FormLabel component='legend'>{t('signature')}</FormLabel>
           <RadioGroup
             aria-label='signature'
             name='signature'
             value={this.props.signature.toString()}
             onChange={this.handleSignatureChange}>
-
-            <FormControlLabel value={Signature.MD5.toString()} control={<Radio />} label='MD5' />
-            <FormControlLabel value={Signature.SHA1.toString()} control={<Radio />} label='SHA1' />
-            <FormControlLabel value={Signature.SHA256.toString()} control={<Radio />} label='SHA256' />
-            <FormControlLabel value={Signature.SHA512.toString()} control={<Radio />} label='SHA512' />
+            {['MD5', 'SHA1', 'SHA256', 'SHA512'].map((method, index) =>
+              <FormControlLabel key={index} value={Signature[method].toString()} control={<Radio />} label={method} />
+            )}
           </RadioGroup>
         </Grid>
         <Divider />
         <Grid>
           <FormControlLabel
-            control={
-              <Switch
-                checked={this.props.compress}
-                onChange={this.handleCompressChange}
-              />
-            }
-            label='Compress'
+            control={<Switch
+              checked={this.props.compress}
+              onChange={this.handleCompressChange}
+            />}
+            label={t('compress')}
           />
         </Grid>
         <Divider />
@@ -56,7 +56,7 @@ export class PackOptions extends React.Component<Props, State> {
             fullWidth
             variant='filled'
             id='stub'
-            label='Stub'
+            label={t('stub')}
             value={stub}
             multiline
             onChange={this.handleStubChange}
@@ -81,4 +81,4 @@ export class PackOptions extends React.Component<Props, State> {
     this.props.setStub(String(event.target.value))
 }
 
-export default withPackOptions(PackOptions)
+export default translate('translations')(withPackOptions(PackOptions))

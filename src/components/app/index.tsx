@@ -25,6 +25,12 @@ import Grow from '@material-ui/core/Grow'
 import { translate, InjectedTranslateProps } from 'react-i18next'
 import withWidth, { isWidthUp, WithWidth } from '@material-ui/core/withWidth'
 
+import ExpansionPanel from '@material-ui/core/ExpansionPanel'
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary'
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails'
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+import { Theme } from '@material-ui/core/styles/createMuiTheme'
+
 interface StateProps {
   signature?: Signature
   compress?: boolean
@@ -43,7 +49,7 @@ interface DispatchProps {
 
 type Props = StateProps & DispatchProps & WithWidth & WithStyles<typeof styles> & InjectedTranslateProps
 
-const styles = createStyles({
+const styles = (theme: Theme) => createStyles({
   container: {
     minHeight: '100vh',
     display: 'flex',
@@ -51,6 +57,16 @@ const styles = createStyles({
   },
   content: {
     flex: 1,
+    padding: 16,
+  },
+  howto: {
+    width: '90vw',
+    [theme.breakpoints.up('md')]: {
+      width: '400px',
+    },
+    [theme.breakpoints.up('lg')]: {
+      width: '600px',
+    },
   },
 })
 
@@ -114,7 +130,9 @@ class App extends React.Component<Props, State> {
       <Grid className={classes.container}>
         <AppBar online={online}/>
 
-        <Settings>
+        <Settings
+          title={t('settings')}
+          closeButtonText={t('close')}>
           <PackOptions />
         </Settings>
 
@@ -125,6 +143,14 @@ class App extends React.Component<Props, State> {
           className={classes.content}>
           <Grow in={ready} timeout={1200}>
             <Grid item>
+              <ExpansionPanel className={classes.howto}>
+                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                  <Typography>{t('how-to-use.title')}</Typography>
+                </ExpansionPanelSummary>
+                <ExpansionPanelDetails>
+                  <Typography dangerouslySetInnerHTML={{__html: t('how-to-use.content')}} />
+                </ExpansionPanelDetails>
+              </ExpansionPanel>
               <DropArea onSuccess={(files: File[]) => this.process(files)}>
                 <Typography variant='headline' align='center'>
                   {isWidthUp('sm', width) ? t('select-or-drop') : t('select-file')}
