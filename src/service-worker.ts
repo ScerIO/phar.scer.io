@@ -2,7 +2,7 @@
 var doCache = process.env.NODE_ENV === 'production'
 
 // Name our cache
-var CACHE_NAME = 'phar-app-cache-v1'
+var CACHE_NAME = 'phar-app-cache-v2'
 
 // Delete old caches that are not our current one!
 self.addEventListener('activate', (event) => {
@@ -23,9 +23,10 @@ self.addEventListener('activate', (event) => {
 // The first time the user starts up the PWA, 'install' is triggered.
 self.addEventListener('install', (event) => {
   console.log('install called')
-  // if (!doCache) return
+  if (!doCache) return
   event.waitUntil(
-    caches.open(CACHE_NAME)
+    caches
+      .open(CACHE_NAME)
       .then((cache) => {
         // Get the assets manifest so we can see what our js file is named
         // This is because webpack hashes it

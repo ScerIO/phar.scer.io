@@ -1,11 +1,11 @@
 {
-  "name": "PHAR",
+  "name": "PHAR Converter",
   "short_name": "PHAR",
   "start_url": ".",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#FAFAFA",
-  "theme_color": "#EEEEEE",
+  "theme_color": "#FFFFFF",
   "icons": [
     {
      "src": "\/assets/icons/android-icon-36x36.png",

@@ -1,9 +1,35 @@
 import * as React from 'react'
-import Typography from '@material-ui/core/Typography'
-import Styled from './style'
+import Paper from '@material-ui/core/Paper'
+import DropZone from 'react-dropzone'
+import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles'
+import { Theme } from '@material-ui/core/styles/createMuiTheme'
+import createStyles from '@material-ui/core/styles/createStyles'
 
-interface Props {
-  title: string
+const styles = (theme: Theme) => createStyles({
+  container: {
+    transition: 'all .3s ease-in',
+    height: '90vw',
+    width: '90vw',
+    [theme.breakpoints.up('md')]: {
+      height: '400px',
+      width: '400px',
+    },
+    [theme.breakpoints.up('lg')]: {
+      height: '600px',
+      width: '600px',
+    },
+  },
+  dropzone: {
+    padding: 40,
+    height: '100%',
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
+
+interface Props extends WithStyles<typeof styles> {
   onSuccess: (files: File[]) => void
 }
 
@@ -11,23 +37,26 @@ interface State {
   elevation: number
 }
 
-export default class DropArea extends React.Component<Props, State> {
+class DropArea extends React.Component<Props, State> {
   public state: State = {
     elevation: 1
   }
 
   public render() {
+    const {
+      children,
+      classes,
+    } = this.props
+
     return (
-      <Styled.Container elevation={this.state.elevation}>
-        <Styled.DropZone
+      <Paper elevation={this.state.elevation} className={classes.container}>
+        <DropZone className={classes.dropzone}
           onDragLeave={this.onDragLeave}
           onDragEnter={this.onDragEnter}
           onDrop={this.onDrop}>
-          <Typography variant='subheading'>
-            {this.props.title}
-          </Typography>
-        </Styled.DropZone>
-      </Styled.Container>
+          {children}
+        </DropZone>
+      </Paper>
     )
   }
 
@@ -39,3 +68,5 @@ export default class DropArea extends React.Component<Props, State> {
     this.props.onSuccess(files)
   }
 }
+
+export default withStyles(styles)(DropArea)

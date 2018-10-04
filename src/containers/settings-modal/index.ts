@@ -1,28 +1,23 @@
 import { Dispatch, connect } from 'react-redux'
-import { setMode, ModeType } from 'actions/Mode'
+import { State as StateProps } from 'reducers/UI'
+import { setUISettingsModal } from 'actions/UI'
 import { ApplicationState } from 'reducers/Root'
-export { ModeType }
-
-
-export interface StateProps {
-  mode?: ModeType
-}
 
 export interface DispatchProps {
-  setMode?(mode: ModeType)
+  setUISettingsModal?: typeof setUISettingsModal
 }
 
 export type Props = StateProps & DispatchProps
 
 const
   mapStateToProps = (state: ApplicationState): StateProps => ({
-    mode: state.mode,
+    settingsModal: state.ui.settingsModal,
   }),
   mapDispatchToProps = (dispatch: Dispatch<DispatchProps>) => ({
-    setMode: (mode: ModeType) => dispatch(setMode(mode)),
+    setUISettingsModal: (uiSettingsModal: boolean) => dispatch(setUISettingsModal(uiSettingsModal)),
   }),
-  withMode = <P extends Props>(
+  withUISettingsModal = <P extends Props>(
     WrappedComponent: React.ComponentType<P>,
   ) => connect<StateProps>(mapStateToProps, mapDispatchToProps)(WrappedComponent)
 
-export default withMode
+export default withUISettingsModal

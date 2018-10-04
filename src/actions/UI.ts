@@ -1,15 +1,15 @@
 import { BaseAction } from './Base'
 
-export const UIDrawerStatusActionName = 'UI_DRAWER_STATUS'
+export const UISettingsModalActionName = 'UI_SETTINGS_MODAL'
 
-export interface UIDrawerStatusAction extends BaseAction {
+export interface UISettingsModalAction extends BaseAction {
   payload: boolean
 }
 
 /**
- * @param {UIDrawerStatus} payload - Drawer status
- * @returns {UIDrawerStatusAction}
+ * @param {UISettingsModal} payload - Drawer status
+ * @returns {UISettingsModalAction}
  */
-export const setUIDrawerStatus = (payload: boolean) => ({
-  type: UIDrawerStatusActionName, payload
+export const setUISettingsModal = (payload: boolean) => ({
+  type: UISettingsModalActionName, payload
 })
