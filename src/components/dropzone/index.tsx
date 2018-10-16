@@ -60,7 +60,7 @@ class DropArea extends React.Component<Props, State> {
     )
   }
 
-  private onDragEnter = () => this.setState({ elevation: 3 })
+  private onDragEnter = () => this.setState({ elevation: 5 })
   private onDragLeave = () => this.setState({ elevation: 1 })
 
   private onDrop = (files: File[]) => {

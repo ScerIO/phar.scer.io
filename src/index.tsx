@@ -1,6 +1,6 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import { MuiThemeProvider } from '@material-ui/core/styles'
+import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import * as OfflinePluginRuntime from 'offline-plugin/runtime'
 import { I18nextProvider } from 'react-i18next'

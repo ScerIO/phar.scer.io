@@ -25,7 +25,7 @@ const AppBar = ({
   <Collapse direction='down' in={true} timeout={1200}>
     <MaterialAppBar position='static'>
         <Toolbar>
-          <Typography variant='title' color='inherit' style={{flexGrow: 1}}>
+          <Typography component='h1' variant='h6' color='inherit' style={{flexGrow: 1}}>
             PHAR {isWidthUp('sm', width) && ' ' + t('title')}
           </Typography>
           {

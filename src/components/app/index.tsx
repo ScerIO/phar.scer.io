@@ -152,7 +152,7 @@ class App extends React.Component<Props, State> {
                 </ExpansionPanelDetails>
               </ExpansionPanel>
               <DropArea onSuccess={(files: File[]) => this.process(files)}>
-                <Typography variant='headline' align='center'>
+                <Typography component='h2' variant='h5' align='center'>
                   {isWidthUp('sm', width) ? t('select-or-drop') : t('select-file')}
                 </Typography>
               </DropArea>
