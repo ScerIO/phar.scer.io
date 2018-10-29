@@ -1,9 +1,11 @@
-const { existsSync } = require('fs'),
+const
+  fs = require('fs'),
+  path = require('path'),
   webpack = require('webpack'),
   OfflinePlugin = require('offline-plugin'),
   HtmlWebpackPlugin = require('html-webpack-plugin'),
   CopyWebpackPlugin = require('copy-webpack-plugin'),
-  path = require('path')
+  { version } = require('./package')
 
 const mode = process.env.NODE_ENV || 'development',
   plugins = []
@@ -36,7 +38,7 @@ mode === 'production' &&
     }),
   )
 
-const seoFiles = (existsSync('./seo/'))
+const seoFiles = (fs.existsSync('./seo/'))
   ? [{from: './seo/', to: './'}]
   : []
 
@@ -101,7 +103,7 @@ module.exports = {
 
   plugins: [
     new HtmlWebpackPlugin({
-      template: './src/index.pug',
+      template: './src/index.html',
     }),
     new CopyWebpackPlugin([{
         from: './src/manifest.json',
@@ -116,6 +118,9 @@ module.exports = {
       ...seoFiles,
     ]),
     new webpack.EnvironmentPlugin(['NODE_ENV']),
+    new webpack.DefinePlugin({
+      'appVersion': JSON.stringify(version),
+    }),
     ...plugins,
   ],
 

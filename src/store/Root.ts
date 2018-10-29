@@ -7,7 +7,7 @@ import rootReducer from 'reducers/Root'
 const persistedReducer = persistReducer({
   key: 'root',
   storage,
-  whitelist: ['packOptions']
+  whitelist: ['settings']
 }, rootReducer)
 
 export default () => {

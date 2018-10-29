@@ -7,9 +7,9 @@ export interface UISettingsModalAction extends BaseAction {
 }
 
 /**
- * @param {UISettingsModal} payload - Drawer status
+ * @param {UISettingsModal} payload
  * @returns {UISettingsModalAction}
  */
 export const setUISettingsModal = (payload: boolean) => ({
-  type: UISettingsModalActionName, payload
+  type: UISettingsModalActionName, payload,
 })

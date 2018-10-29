@@ -20,6 +20,11 @@ i18n
             'content': `To unpack the PHAR archive, you need to click on the area below or drag the * .phar file into it with the mouse. As a result of unpacking, you will receive a ZIP archive. <br />
             To package the PHAR archive, you need to click on the area below or drag the * .zip file into it with the mouse. As a result of unpacking, you will receive a PHAR archive.`,
           },
+          'theme': 'Theme',
+          'themes': {
+            'light': 'Light',
+            'dark': 'Dark',
+          },
         }
       },
       ru: {
@@ -37,6 +42,11 @@ i18n
             'content': `Для распаковки PHAR архива вам необходимо кликнуть на область снизу или перетянуть в неё файл *.phar при помощи мыши. В результате распаковки вы получите ZIP архив.<br />
             Для упаковки PHAR архива вам необходимо кликнуть на область снизу или перетянуть в неё файл *.zip при помощи мыши. В результате распаковки вы получите PHAR архив.`,
           },
+          'theme': 'Тема',
+          'themes': {
+            'light': 'Светлая',
+            'dark': 'Темная',
+          },
         }
       }
     },
@@ -44,7 +54,7 @@ i18n
     debug: process.env.NODE_ENV !== 'production',
 
     ns: ['translations'],
-    defaultNS: 'translations',
+    fallbackNS: 'translations',
 
     keySeparator: '.',
 

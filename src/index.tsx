@@ -1,10 +1,7 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider'
-import CssBaseline from '@material-ui/core/CssBaseline'
 import * as OfflinePluginRuntime from 'offline-plugin/runtime'
-import { I18nextProvider } from 'react-i18next'
-import theme from 'theme'
+import { I18nextProvider } from 'react-i18next/'
 
 import { Provider } from 'react-redux'
 import RootStore from 'store/Root'
@@ -32,10 +29,7 @@ OfflinePluginRuntime.install({
 ReactDOM.render(
   <Provider store={RootStore()} >
     <I18nextProvider i18n={i18n}>
-      <MuiThemeProvider theme={theme}>
-        <CssBaseline />
-        <App />
-      </MuiThemeProvider>
+      <App />
     </I18nextProvider>
   </Provider>,
   document.getElementById('root')

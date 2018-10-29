@@ -6,7 +6,7 @@ import {
   StubAction,
   StubActionName,
   Signature,
-} from 'actions/PackOptions'
+} from 'actions/settings/PackOptions'
 
 export interface State {
   signature?: Signature

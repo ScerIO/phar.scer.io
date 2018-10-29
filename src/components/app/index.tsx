@@ -10,19 +10,19 @@ import { saveAs } from 'file-saver'
 
 import { connect } from 'utils/Connect'
 import { ApplicationState } from 'reducers/Root'
-import { Signature } from 'actions/PackOptions'
+import { Signature } from 'actions/settings/PackOptions'
 import DropArea from 'components/dropzone'
-import PackOptions from 'components/pack-options'
 import Settings from 'components/settings'
 
 import debug from 'utils/debug'
 import { InternetStatusType, setInternetStatus } from 'actions/InternetStatus'
+import { ThemeType } from 'actions/settings/Main'
 import AppBar from 'components/app-toolbar'
 
 import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles'
 import createStyles from '@material-ui/core/styles/createStyles'
 import Grow from '@material-ui/core/Grow'
-import { translate, InjectedTranslateProps } from 'react-i18next'
+import { withNamespaces, WithNamespaces } from 'react-i18next'
 import withWidth, { isWidthUp, WithWidth } from '@material-ui/core/withWidth'
 
 import ExpansionPanel from '@material-ui/core/ExpansionPanel'
@@ -30,12 +30,16 @@ import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary'
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import { Theme } from '@material-ui/core/styles/createMuiTheme'
+import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider'
+import CssBaseline from '@material-ui/core/CssBaseline'
+import * as Themes from 'theme'
 
 interface StateProps {
   signature?: Signature
   compress?: boolean
   stub?: string
   internetStatus?: InternetStatusType
+  theme?: ThemeType
 }
 
 interface State {
@@ -47,7 +51,7 @@ interface DispatchProps {
   setInternetStatus?: typeof setInternetStatus
 }
 
-type Props = StateProps & DispatchProps & WithWidth & WithStyles<typeof styles> & InjectedTranslateProps
+type Props = StateProps & DispatchProps & WithWidth & WithStyles<typeof styles> & WithNamespaces
 
 const styles = (theme: Theme) => createStyles({
   container: {
@@ -75,9 +79,10 @@ class App extends React.Component<Props, State> {
   static mapStateToProps(state: ApplicationState): StateProps {
     return {
       internetStatus: state.internetStatus,
-      signature: state.packOptions.signature,
-      compress: state.packOptions.compress,
-      stub: state.packOptions.stub,
+      signature: state.settings.packOptions.signature,
+      compress: state.settings.packOptions.compress,
+      stub: state.settings.packOptions.stub,
+      theme: state.settings.main.theme,
     }
   }
 
@@ -95,7 +100,7 @@ class App extends React.Component<Props, State> {
   public componentDidMount() {
     window.addEventListener('online', this.updateOnlineStatus)
     window.addEventListener('offline', this.updateOnlineStatus)
-    this.setState({ready: true})
+    this.setState({ ready: true })
   }
 
   public componentWillUnmount() {
@@ -115,6 +120,7 @@ class App extends React.Component<Props, State> {
   public render(): JSX.Element {
     const
       {
+        theme,
         internetStatus,
         classes,
         width,
@@ -126,66 +132,68 @@ class App extends React.Component<Props, State> {
       } = this.state,
       online = internetStatus === InternetStatusType.online
 
+      console.log(theme, ThemeType[theme])
+
     return (
-      <Grid className={classes.container}>
-        <AppBar online={online}/>
+      <MuiThemeProvider theme={Themes[ThemeType[theme]]}>
+        <CssBaseline />
 
-        <Settings
-          title={t('settings')}
-          closeButtonText={t('close')}>
-          <PackOptions />
-        </Settings>
+        <Grid className={classes.container}>
+          <AppBar online={online} />
 
-        <Grid
-          container
-          alignItems='center'
-          justify='center'
-          className={classes.content}>
-          <Grow in={ready} timeout={1200}>
-            <Grid item>
-              <ExpansionPanel className={classes.howto}>
-                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                  <Typography>{t('how-to-use.title')}</Typography>
-                </ExpansionPanelSummary>
-                <ExpansionPanelDetails>
-                  <Typography dangerouslySetInnerHTML={{__html: t('how-to-use.content')}} />
-                </ExpansionPanelDetails>
-              </ExpansionPanel>
-              <DropArea onSuccess={(files: File[]) => this.process(files)}>
-                <Typography component='h2' variant='h5' align='center'>
-                  {isWidthUp('sm', width) ? t('select-or-drop') : t('select-file')}
-                </Typography>
-              </DropArea>
-            </Grid>
-          </Grow>
+          <Settings />
+
+          <Grid
+            container
+            alignItems='center'
+            justify='center'
+            className={classes.content}>
+            <Grow in={ready} timeout={1200}>
+              <Grid item>
+                <ExpansionPanel className={classes.howto}>
+                  <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                    <Typography>{t('how-to-use.title')}</Typography>
+                  </ExpansionPanelSummary>
+                  <ExpansionPanelDetails>
+                    <Typography dangerouslySetInnerHTML={{ __html: t('how-to-use.content') }} />
+                  </ExpansionPanelDetails>
+                </ExpansionPanel>
+                <DropArea onSuccess={(files: File[]) => this.process(files)}>
+                  <Typography component='h2' variant='h5' align='center'>
+                    {isWidthUp('sm', width) ? t('select-or-drop') : t('select-file')}
+                  </Typography>
+                </DropArea>
+              </Grid>
+            </Grow>
+          </Grid>
+
+          <Snackbar
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'right',
+            }}
+            open={Boolean(error)}
+            autoHideDuration={5000}
+            onClose={this.handleErrorClose}
+            ContentProps={{
+              'aria-describedby': 'message-id',
+            }}
+            message={<span id="message-id">{error}</span>} />
         </Grid>
-
-        <Snackbar
-          anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'right',
-          }}
-          open={Boolean(error)}
-          autoHideDuration={5000}
-          onClose={this.handleErrorClose}
-          ContentProps={{
-            'aria-describedby': 'message-id',
-          }}
-          message={<span id="message-id">{error}</span>}/>
-      </Grid>
+      </MuiThemeProvider>
     )
   }
 
   private process = (files: File[]) =>
     files.forEach((file: File) => {
       const extension = file.name.split('.').pop()
-      switch(extension) {
+      switch (extension) {
         case 'phar':
           return this.pharToZip(file)
         case 'zip':
           return this.zipToPhar(file)
         default:
-          this.setState({error: `Error: file "${file.name}" has an unsupported format ".${extension}"`})
+          this.setState({ error: `Error: file "${file.name}" has an unsupported format ".${extension}"` })
       }
     })
 
@@ -241,4 +249,4 @@ class App extends React.Component<Props, State> {
   }
 }
 
-export default translate('translations')(withStyles(styles)(withWidth()(App)))
+export default withStyles(styles)(withWidth()(withNamespaces()(App)))

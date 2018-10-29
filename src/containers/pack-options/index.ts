@@ -4,10 +4,9 @@ import {
   setSignature,
   setCompress,
   setStub,
-} from 'actions/PackOptions'
+} from 'actions/settings/PackOptions'
 import { ApplicationState } from 'reducers/Root'
 export { Signature }
-
 
 export interface StateProps {
   signature?: Signature
@@ -25,9 +24,9 @@ export type Props = StateProps & DispatchProps
 
 const
   mapStateToProps = (state: ApplicationState): StateProps => ({
-    signature: state.packOptions.signature,
-    compress: state.packOptions.compress,
-    stub: state.packOptions.stub,
+    signature: state.settings.packOptions.signature,
+    compress: state.settings.packOptions.compress,
+    stub: state.settings.packOptions.stub,
   }),
   mapDispatchToProps = (dispatch: Dispatch<DispatchProps>) => ({
     setSignature: (signature: Signature) => dispatch(setSignature(signature)),

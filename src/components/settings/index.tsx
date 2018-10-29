@@ -5,26 +5,34 @@ import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import withMobileDialog from '@material-ui/core/withMobileDialog'
-import withUISettingsModal, { Props as SettingsModlProps } from 'containers/settings-modal'
+import withUISettingsModal, { Props as SettingsModalProps } from 'containers/settings-modal'
+import PackOptions from 'components/pack-options'
+import withThemeController, { Props as ThemeControllerProps, ThemeType } from 'containers/theme-controller'
 
-interface Props extends SettingsModlProps {
+import InputLabel from '@material-ui/core/InputLabel'
+import MenuItem from '@material-ui/core/MenuItem'
+import FormControl from '@material-ui/core/FormControl'
+import Select from '@material-ui/core/Select'
+import { withNamespaces, WithNamespaces } from 'react-i18next'
+import { Grid } from '@material-ui/core';
+
+interface Props extends SettingsModalProps, ThemeControllerProps, WithNamespaces {
   fullScreen?: boolean
-  title: string
-  closeButtonText: string
 }
 
 class Settings extends React.Component<Props> {
-  handleClose = () => {
+  handleClose = () =>
     this.props.setUISettingsModal(false)
-  }
+
+  changeTheme = (event: React.ChangeEvent<HTMLSelectElement>) =>
+    this.props.setTheme(ThemeType[event.target.value])
 
   render() {
     const {
       fullScreen,
       settingsModal: open,
-      children,
-      title,
-      closeButtonText,
+      theme,
+      t,
     } = this.props
 
     return (
@@ -34,14 +42,31 @@ class Settings extends React.Component<Props> {
         fullScreen={fullScreen}
         open={open}
         onClose={this.handleClose}
-        aria-labelledby="responsive-dialog-title">
-        <DialogTitle id="responsive-dialog-title">{title}</DialogTitle>
+        aria-labelledby='responsive-dialog-title'>
+        <DialogTitle id='responsive-dialog-title'>{t('settings')}</DialogTitle>
         <DialogContent>
-          {children}
+          <PackOptions />
+          <Grid container direction='column'>
+            <Grid item>
+              <FormControl fullWidth>
+                <InputLabel htmlFor='select-theme'>{t('theme')}</InputLabel>
+                <Select
+                  value={ThemeType[theme]}
+                  onChange={this.changeTheme}
+                  inputProps={{
+                    name: 'theme',
+                    id: 'select-theme',
+                  }}>
+                  <MenuItem value={ThemeType.light}>{t('themes.light')}</MenuItem>
+                  <MenuItem value={ThemeType.dark}>{t('themes.dark')}</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+          </Grid>
         </DialogContent>
         <DialogActions>
           <Button onClick={this.handleClose} autoFocus>
-            {closeButtonText}
+            {t('close')}
           </Button>
         </DialogActions>
       </Dialog>
@@ -49,4 +74,4 @@ class Settings extends React.Component<Props> {
   }
 }
 
-export default withMobileDialog<Props>()(withUISettingsModal(Settings))
+export default withMobileDialog()(withUISettingsModal(withThemeController(withNamespaces()(Settings))))
