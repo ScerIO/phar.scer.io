@@ -132,7 +132,7 @@ class App extends React.Component<Props, State> {
       } = this.state,
       online = internetStatus === InternetStatusType.online
 
-      console.log(theme, ThemeType[theme])
+    console.log(theme, ThemeType[theme])
 
     return (
       <MuiThemeProvider theme={Themes[ThemeType[theme]]}>
@@ -152,10 +152,10 @@ class App extends React.Component<Props, State> {
               <Grid item>
                 <ExpansionPanel className={classes.howto}>
                   <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                    <Typography>{t('how-to-use.title')}</Typography>
+                    <Typography variant='subtitle1'>{t('how-to-use.title')}</Typography>
                   </ExpansionPanelSummary>
                   <ExpansionPanelDetails>
-                    <Typography dangerouslySetInnerHTML={{ __html: t('how-to-use.content') }} />
+                    <Typography variant='body2' dangerouslySetInnerHTML={{ __html: t('how-to-use.content') }}></Typography>
                   </ExpansionPanelDetails>
                 </ExpansionPanel>
                 <DropArea onSuccess={(files: File[]) => this.process(files)}>
@@ -178,7 +178,7 @@ class App extends React.Component<Props, State> {
             ContentProps={{
               'aria-describedby': 'message-id',
             }}
-            message={<span id="message-id">{error}</span>} />
+            message={<span id='message-id'>{error}</span>} />
         </Grid>
       </MuiThemeProvider>
     )
@@ -193,7 +193,7 @@ class App extends React.Component<Props, State> {
         case 'zip':
           return this.zipToPhar(file)
         default:
-          this.setState({ error: `Error: file "${file.name}" has an unsupported format ".${extension}"` })
+          this.setState({ error: `Error: file '${file.name}' has an unsupported format '.${extension}'` })
       }
     })
 

@@ -14,7 +14,7 @@ import MenuItem from '@material-ui/core/MenuItem'
 import FormControl from '@material-ui/core/FormControl'
 import Select from '@material-ui/core/Select'
 import { withNamespaces, WithNamespaces } from 'react-i18next'
-import { Grid } from '@material-ui/core';
+import Grid from '@material-ui/core/Grid'
 
 interface Props extends SettingsModalProps, ThemeControllerProps, WithNamespaces {
   fullScreen?: boolean
