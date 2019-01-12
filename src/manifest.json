@@ -3,7 +3,6 @@
   "short_name": "PHAR",
   "start_url": ".",
   "display": "standalone",
-  "orientation": "portrait",
   "background_color": "#FAFAFA",
   "theme_color": "#FFFFFF",
   "icons": [
