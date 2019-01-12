@@ -108,13 +108,13 @@ class App extends React.Component<Props, State> {
     window.removeEventListener('offline', this.updateOnlineStatus)
   }
 
-  private updateOnlineStatus = (_event) =>
+  private updateOnlineStatus = (_event: Event) =>
     this.props.setInternetStatus(navigator.onLine
       ? InternetStatusType.online
       : InternetStatusType.offline
     )
 
-  private handleErrorClose = (_event, reason) =>
+  private handleErrorClose = (_event: React.SyntheticEvent<any, Event>, reason: string) =>
     (reason !== 'clickaway') && this.setState({ error: null })
 
   public render(): JSX.Element {
@@ -131,8 +131,6 @@ class App extends React.Component<Props, State> {
         ready,
       } = this.state,
       online = internetStatus === InternetStatusType.online
-
-    console.log(theme, ThemeType[theme])
 
     return (
       <MuiThemeProvider theme={Themes[ThemeType[theme]]}>
@@ -155,7 +153,7 @@ class App extends React.Component<Props, State> {
                     <Typography variant='subtitle1'>{t('how-to-use.title')}</Typography>
                   </ExpansionPanelSummary>
                   <ExpansionPanelDetails>
-                    <Typography variant='body2' dangerouslySetInnerHTML={{ __html: t('how-to-use.content') }}></Typography>
+                    <Typography dangerouslySetInnerHTML={{ __html: t('how-to-use.content') }} />
                   </ExpansionPanelDetails>
                 </ExpansionPanel>
                 <DropArea onSuccess={(files: File[]) => this.process(files)}>

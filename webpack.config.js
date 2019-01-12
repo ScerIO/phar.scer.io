@@ -75,9 +75,6 @@ module.exports = {
       test: /\.tsx?$/,
       loader: ['ts-loader'],
     },{
-      test: /.pug$/,
-      loader: 'pug-loader',
-    },{
       test: /\.(ico|svg|png|jpg)$/,
       loader: 'file-loader',
       options: {

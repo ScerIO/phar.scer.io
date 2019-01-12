@@ -29,7 +29,7 @@ export class PackOptions extends React.Component<Props, State> {
     return (
       <Grid container direction='column'>
         <Grid item>
-          <FormLabel component='legend'>{t('signature')}</FormLabel>
+          <FormLabel>{t('signature')}</FormLabel>
           <RadioGroup
             aria-label='signature'
             name='signature'
@@ -67,10 +67,10 @@ export class PackOptions extends React.Component<Props, State> {
     )
   }
 
-  private handleSignatureChange = (_event, value: string) =>
+  private handleSignatureChange = (_event: React.ChangeEvent<{}>, value: string) =>
     this.props.setSignature(Number(value))
 
-  private handleCompressChange = (_event, checked: boolean) =>
+  private handleCompressChange = (_event: React.ChangeEvent<{}>, checked: boolean) =>
     this.props.setCompress(Boolean(checked))
 
   private handleStubChange = (event: React.ChangeEvent<HTMLInputElement>) =>
