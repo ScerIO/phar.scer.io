@@ -9,13 +9,13 @@ import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Divider from '@material-ui/core/Divider'
 
 import withPackOptions, { Props as PackProps, Signature } from 'containers/pack-options'
-import { InjectedTranslateProps, translate } from 'react-i18next'
+import { withNamespaces, WithNamespaces } from 'react-i18next'
 
 interface State {
   stub: string
 }
 
-type Props = PackProps & InjectedTranslateProps
+type Props = PackProps & WithNamespaces
 
 export class PackOptions extends React.Component<Props, State> {
   public state = {
@@ -27,9 +27,9 @@ export class PackOptions extends React.Component<Props, State> {
     const { stub } = this.state
 
     return (
-      <>
-        <Grid>
-          <FormLabel component='legend'>{t('signature')}</FormLabel>
+      <Grid container direction='column'>
+        <Grid item>
+          <FormLabel>{t('signature')}</FormLabel>
           <RadioGroup
             aria-label='signature'
             name='signature'
@@ -41,7 +41,7 @@ export class PackOptions extends React.Component<Props, State> {
           </RadioGroup>
         </Grid>
         <Divider />
-        <Grid>
+        <Grid item>
           <FormControlLabel
             control={<Switch
               checked={this.props.compress}
@@ -51,7 +51,7 @@ export class PackOptions extends React.Component<Props, State> {
           />
         </Grid>
         <Divider />
-        <Grid>
+        <Grid item>
           <TextField
             fullWidth
             variant='filled'
@@ -61,17 +61,16 @@ export class PackOptions extends React.Component<Props, State> {
             multiline
             onChange={this.handleStubChange}
             onBlur={this.handleStubBlur}
-            margin='normal'
-          />
+            margin='normal' />
         </Grid>
-      </>
+      </Grid>
     )
   }
 
-  private handleSignatureChange = (_event, value: string) =>
+  private handleSignatureChange = (_event: React.ChangeEvent<{}>, value: string) =>
     this.props.setSignature(Number(value))
 
-  private handleCompressChange = (_event, checked: boolean) =>
+  private handleCompressChange = (_event: React.ChangeEvent<{}>, checked: boolean) =>
     this.props.setCompress(Boolean(checked))
 
   private handleStubChange = (event: React.ChangeEvent<HTMLInputElement>) =>
@@ -81,4 +80,4 @@ export class PackOptions extends React.Component<Props, State> {
     this.props.setStub(String(event.target.value))
 }
 
-export default translate('translations')(withPackOptions(PackOptions))
+export default withPackOptions(withNamespaces()(PackOptions))

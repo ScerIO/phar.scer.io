@@ -15,6 +15,6 @@ export interface InternetStatusAction extends BaseAction {
  * @param {InternetStatusType} payload - Internet status
  * @returns {InternetStatusAction}
  */
-export const setInternetStatus = (payload: InternetStatusType) => {
-  return { type: InternetStatusActionName, payload } as InternetStatusAction
-}
+export const setInternetStatus = (payload: InternetStatusType) => ({
+  type: InternetStatusActionName, payload,
+} as InternetStatusAction)

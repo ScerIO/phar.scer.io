@@ -1,4 +1,4 @@
-import { BaseAction } from './Base'
+import { BaseAction } from '../Base'
 import { Signature } from 'phar'
 export { Signature }
 

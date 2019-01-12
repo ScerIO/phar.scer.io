@@ -9,9 +9,9 @@ import Collapse from '@material-ui/core/Slide';
 import withWidth, { WithWidth, isWidthUp } from '@material-ui/core/withWidth'
 
 import withUISettingsModal, { Props as StateProps } from 'containers/settings-modal'
-import { translate, InjectedTranslateProps } from 'react-i18next'
+import { withNamespaces, WithNamespaces } from 'react-i18next'
 
-interface Props extends StateProps, WithWidth, InjectedTranslateProps {
+interface Props extends StateProps, WithWidth, WithNamespaces {
   online: boolean
 }
 
@@ -46,4 +46,4 @@ const AppBar = ({
     </MaterialAppBar>
   </Collapse>
 
-export default withUISettingsModal(translate('translations')(withWidth()(AppBar)))
+export default withUISettingsModal(withNamespaces()(withWidth()(AppBar)))

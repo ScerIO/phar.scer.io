@@ -2,7 +2,7 @@
 var doCache = process.env.NODE_ENV === 'production'
 
 // Name our cache
-var CACHE_NAME = 'phar-app-cache-v3'
+var CACHE_NAME = `dictionary-v${appVersion}`
 
 // Delete old caches that are not our current one!
 self.addEventListener('activate', (event) => {
