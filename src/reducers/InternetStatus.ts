@@ -6,5 +6,6 @@ import {
 
 export type State = InternetStatusType
 
-export default (state: State = InternetStatusType.online, action: InternetStatusAction): State =>
-  (action.type === InternetStatusActionName) ? action.payload : state
+export default function (state: State = InternetStatusType.online, action: InternetStatusAction): State {
+  return (action.type === InternetStatusActionName) ? action.payload : state
+}

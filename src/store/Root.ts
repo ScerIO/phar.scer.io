@@ -16,7 +16,7 @@ export default () => {
   //@ts-ignore
   const store = createStore(persistedReducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
   persistStore(store, {}, () => {
-    const theme = (store.getState() as ApplicationState).settings.main.theme
+    const theme = (store.getState() as ApplicationState).settings.theme
     setThemeColor(getMainColorByTheme(theme))
   })
   return store

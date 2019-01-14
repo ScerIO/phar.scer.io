@@ -5,7 +5,7 @@ const
   OfflinePlugin = require('offline-plugin'),
   HtmlWebpackPlugin = require('html-webpack-plugin'),
   CopyWebpackPlugin = require('copy-webpack-plugin'),
-  { version } = require('./package')
+  { version, homepage } = require('./package')
 
 const mode = process.env.NODE_ENV || 'development',
   plugins = []
@@ -117,6 +117,7 @@ module.exports = {
     new webpack.EnvironmentPlugin(['NODE_ENV']),
     new webpack.DefinePlugin({
       'appVersion': JSON.stringify(version),
+      'homepageUrl': JSON.stringify(homepage),
     }),
     ...plugins,
   ],

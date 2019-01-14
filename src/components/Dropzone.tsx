@@ -1,12 +1,12 @@
 import * as React from 'react'
 import Paper from '@material-ui/core/Paper'
-import DropZone from 'react-dropzone'
+import ReactDropzone from 'react-dropzone'
 import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles'
 import { Theme } from '@material-ui/core/styles/createMuiTheme'
 import createStyles from '@material-ui/core/styles/createStyles'
 
 const styles = (theme: Theme) => createStyles({
-  container: {
+  root: {
     transition: 'all .3s ease-in',
     height: '90vw',
     width: '90vw',
@@ -18,6 +18,9 @@ const styles = (theme: Theme) => createStyles({
       height: '600px',
       width: '600px',
     },
+    '& div:focus': {
+      outline: 'none',
+    }
   },
   dropzone: {
     padding: 40,
@@ -37,31 +40,37 @@ interface State {
   elevation: number
 }
 
-class DropArea extends React.Component<Props, State> {
+class Dropzone extends React.Component<Props, State> {
   public state: State = {
     elevation: 1
   }
 
   public render() {
-    const {
-      children,
-      classes,
-    } = this.props
+    const { children, classes } = this.props
 
     return (
-      <Paper elevation={this.state.elevation} className={classes.container}>
-        <DropZone className={classes.dropzone}
+      <Paper elevation={this.state.elevation} className={classes.root}>
+        <ReactDropzone
           onDragLeave={this.onDragLeave}
           onDragEnter={this.onDragEnter}
           onDrop={this.onDrop}>
-          {children}
-        </DropZone>
+          {({ getRootProps, getInputProps }) =>
+            <div
+              {...getRootProps()}
+              className={classes.dropzone}>
+              <input {...getInputProps()} />
+              {children}
+            </div>}
+        </ReactDropzone>
       </Paper>
     )
   }
 
-  private onDragEnter = () => this.setState({ elevation: 5 })
-  private onDragLeave = () => this.setState({ elevation: 1 })
+  private onDragEnter = () =>
+    this.setState({ elevation: 5 })
+
+  private onDragLeave = () =>
+    this.setState({ elevation: 1 })
 
   private onDrop = (files: File[]) => {
     this.onDragLeave()
@@ -69,4 +78,4 @@ class DropArea extends React.Component<Props, State> {
   }
 }
 
-export default withStyles(styles)(DropArea)
+export default withStyles(styles)(Dropzone)

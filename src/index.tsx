@@ -1,13 +1,13 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import * as OfflinePluginRuntime from 'offline-plugin/runtime'
-import { I18nextProvider } from 'react-i18next/'
 
 import { Provider } from 'react-redux'
 import RootStore from 'store/Root'
-import App from 'components/app'
+import App from 'containers/App'
 
-import i18n from 'i18n'
+import 'i18n'
+import ThemeProvider from 'containers/ThemeProvider';
 
 OfflinePluginRuntime.install({
   onUpdating() {
@@ -28,9 +28,9 @@ OfflinePluginRuntime.install({
 
 ReactDOM.render(
   <Provider store={RootStore()} >
-    <I18nextProvider i18n={i18n}>
+    <ThemeProvider>
       <App />
-    </I18nextProvider>
+    </ThemeProvider>
   </Provider>,
   document.getElementById('root')
 )

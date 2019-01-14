@@ -1,4 +1,4 @@
-import { BaseAction } from '../Base'
+import BaseAction from 'actions/BaseAction'
 
 export enum ThemeType {
   light = 'light',
@@ -15,6 +15,6 @@ export interface ThemeAction extends BaseAction {
  * @param {ThemeType} payload
  * @returns {ThemeAction}
  */
-export const setTheme = (payload: ThemeType) => ({
-  type: ThemeActionName, payload,
-})
+export function setTheme(payload: ThemeType): ThemeAction {
+  return { type: ThemeActionName, payload }
+}

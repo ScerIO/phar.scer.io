@@ -77,20 +77,20 @@
     prop-types "^15.6.0"
     react-is "^16.6.3"
 
-"@types/file-saver@^1.3.1":
-  version "1.3.1"
-  resolved "https://registry.yarnpkg.com/@types/file-saver/-/file-saver-1.3.1.tgz#55d76b3c78b5fcc8a7588ead428dce0822464120"
-  integrity sha512-A+lNc0nnhtX3iTLEYd/DisKTZdNKTf1bN0aSfQD/fG8bQ6SfUe5u8Fm2ab8qQHaMY5GVZumAXLnYptwX+mmQgg==
+"@types/file-saver@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@types/file-saver/-/file-saver-2.0.0.tgz#cbb49815a5e1129d5f23836a98d65d93822409af"
+  integrity sha512-dxdRrUov2HVTbSRFX+7xwUPlbGYVEZK6PrSqClg2QPos3PNe0bCajkDDkDeeC1znjSH03KOEqVbXpnJuWa2wgQ==
 
 "@types/i18next-browser-languagedetector@^2.0.1":
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/@types/i18next-browser-languagedetector/-/i18next-browser-languagedetector-2.0.1.tgz#35490253884b15311c54108697d5a7147a75df95"
   integrity sha512-9TwP0tw0PSXUtBtM12PFUjBsl9sP5bNHd54qdSXBrrZ4HJmtVdqbKvmXLH4Qd3KQzIS2g/Z7HhLhygL2LUSb8w==
 
-"@types/i18next@^11.9.3":
-  version "11.9.3"
-  resolved "https://registry.yarnpkg.com/@types/i18next/-/i18next-11.9.3.tgz#04d84c6539908ad69665d26d8967f942d1638550"
-  integrity sha512-snM7bMKy6gt7UYdpjsxycqSCAy0fr2JVPY0B8tJ2vp9bN58cE7C880k20PWFM4KXxQ3KsstKM8DLCawGCIH0tg==
+"@types/i18next@^12.1.0":
+  version "12.1.0"
+  resolved "https://registry.yarnpkg.com/@types/i18next/-/i18next-12.1.0.tgz#7c3fd3dbe03f9531147033773bbd0ca4f474a180"
+  integrity sha512-qLyqTkp3ZKHsSoX8CNVYcTyTkxlm0aRCUpaUVetgkSlSpiNCdWryOgaYwgbO04tJIfLgBXPcy0tJ3Nl/RagllA==
 
 "@types/jss@^9.5.6":
   version "9.5.7"
@@ -117,12 +117,17 @@
   resolved "https://registry.yarnpkg.com/@types/pako/-/pako-1.0.0.tgz#eaae8364d1b7f752e263bc3fd68dfec98e6136c5"
   integrity sha1-6q6DZNG391LiY7w/1o3+yY5hNsU=
 
+"@types/prismjs@^1.9.0":
+  version "1.9.0"
+  resolved "https://registry.yarnpkg.com/@types/prismjs/-/prismjs-1.9.0.tgz#38af9491e2f105079a443703ee675fb27371ec94"
+  integrity sha512-zeh+xd2pcCvWm1XtWLR4v5pzZMybKeq6X8Q4cIZMMx8GmyKDUfJaOtw+JaONHUQt5ncKFXezl8QGIDQsSF5YfA==
+
 "@types/prop-types@*":
   version "15.5.8"
   resolved "https://registry.yarnpkg.com/@types/prop-types/-/prop-types-15.5.8.tgz#8ae4e0ea205fe95c3901a5a1df7f66495e3a56ce"
   integrity sha512-3AQoUxQcQtLHsK25wtTWIoIpgYjH3vSDroZOUr7PpCHw/jLY1RB9z9E8dBT/OSmwStVgkRNvdh+ZHNiomRieaw==
 
-"@types/react-dom@^16.0.9":
+"@types/react-dom@^16.0.11":
   version "16.0.11"
   resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-16.0.11.tgz#bd10ccb0d9260343f4b9a49d4f7a8330a5c1f081"
   integrity sha512-x6zUx9/42B5Kl2Vl9HlopV8JF64wLpX3c+Pst9kc1HgzrsH+mkehe/zmHMQTplIrR48H2gpU7ZqurQolYu8XBA==
@@ -151,7 +156,7 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react@*", "@types/react@^16.4.18":
+"@types/react@*", "@types/react@^16.7.18":
   version "16.7.18"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-16.7.18.tgz#f4ce0d539a893dd61e36cd11ae3a5e54f5a48337"
   integrity sha512-Tx4uu3ppK53/iHk6VpamMP3f3ahfDLEVt3ZQc8TFm30a1H3v9lMsCntBREswZIW/SKrvJjkb3Hq8UwO6GREBng==
@@ -1733,10 +1738,10 @@ figgy-pudding@^3.5.1:
   resolved "https://registry.yarnpkg.com/figgy-pudding/-/figgy-pudding-3.5.1.tgz#862470112901c727a0e495a80744bd5baa1d6790"
   integrity sha512-vNKxJHTEKNThjfrdJwHc7brvM6eVevuO5nTj6ez8ZQ1qbXTvGthucRF7S4vf2cr71QVnT70V34v0S1DyQsti0w==
 
-file-loader@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/file-loader/-/file-loader-2.0.0.tgz#39749c82f020b9e85901dcff98e8004e6401cfde"
-  integrity sha512-YCsBfd1ZGCyonOKLxPiKPdu+8ld9HAaMEvJewzz+b2eTF7uL5Zm/HdBF6FjCrpCMRq25Mi0U1gl4pwn2TlH7hQ==
+file-loader@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/file-loader/-/file-loader-3.0.1.tgz#f8e0ba0b599918b51adfe45d66d1e771ad560faa"
+  integrity sha512-4sNIOXgtH/9WZq4NvlfU3Opn5ynUsqBwSLyM+I7UOwdGigTBYfVVQEwe/msZNX/j4pCJTIM14Fsw66Svo1oVrw==
   dependencies:
     loader-utils "^1.0.2"
     schema-utils "^1.0.0"
@@ -2231,10 +2236,10 @@ i18next-browser-languagedetector@^2.2.3:
   resolved "https://registry.yarnpkg.com/i18next-browser-languagedetector/-/i18next-browser-languagedetector-2.2.4.tgz#b02412d7ab15d7d74e1b1317d67d8a244b219ee3"
   integrity sha512-wPbtH18FdOuB245I8Bhma5/XSDdN/HpYlX+wga1eMy+slhaFQSnrWX6fp+aYSL2eEuj0RlfHeEVz6Fo/lxAj6A==
 
-i18next@^12.0.0:
-  version "12.1.0"
-  resolved "https://registry.yarnpkg.com/i18next/-/i18next-12.1.0.tgz#387bf4b94d05b0160b6a41d001a6b360e384bdb1"
-  integrity sha512-AexmwGkKxwKfo5fGeXTWEY4xqzRPigQ1S/0InOUUVziGO54cd4fKyYK8ED1Thx9fd+WA3fRSZ+1iekvFQMbsFw==
+i18next@^13.1.2:
+  version "13.1.2"
+  resolved "https://registry.yarnpkg.com/i18next/-/i18next-13.1.2.tgz#25b663e6562e76cc4f384f1b5c21bbe4f81b3e85"
+  integrity sha512-W7qVWQiuLcVeq39QE5y1tMh1SFZR1BQ4PdGILuVLYa9dd1Hf7KfFpxqEcRx/UxTiqHpdC99e6C58oqie1bxyGg==
 
 iconv-lite@0.4.23:
   version "0.4.23"
@@ -3753,20 +3758,20 @@ rc@^1.2.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
-react-dom@^16.6.0:
-  version "16.7.0"
-  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.7.0.tgz#a17b2a7ca89ee7390bc1ed5eb81783c7461748b8"
-  integrity sha512-D0Ufv1ExCAmF38P2Uh1lwpminZFRXEINJe53zRAbm4KPwSyd6DY/uDoS0Blj9jvPpn1+wivKpZYc8aAAN/nAkg==
+react-dom@16.8.0-alpha.0:
+  version "16.8.0-alpha.0"
+  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.8.0-alpha.0.tgz#47bbcf42593eab5468b577d3c3f3c27f251a65ef"
+  integrity sha512-OGfLUXGxtMgqLB1BqnB9flVCvc8VvAnhQYeFr+EUzwiODcD34dPrxtfa7ccK4dwzcPi8HRLSyBcaQi2OvVoUww==
   dependencies:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
     prop-types "^15.6.2"
-    scheduler "^0.12.0"
+    scheduler "^0.13.0-alpha.0"
 
-react-dropzone@^7.0.1:
-  version "7.0.1"
-  resolved "https://registry.yarnpkg.com/react-dropzone/-/react-dropzone-7.0.1.tgz#bc76bc1686fb47ed0c8301f968fffa6aecdff47b"
-  integrity sha512-J4rbzhFZPVW7k7K9CVb0OcwSOJGLWa0y+0rvtB4rBLVkvq0agH/o3kPJ0DCkd6ZVzL2K1NFqIOvtQkwQKpmJBA==
+react-dropzone@^8.0.3:
+  version "8.0.3"
+  resolved "https://registry.yarnpkg.com/react-dropzone/-/react-dropzone-8.0.3.tgz#1fe14a5ce58c390327273c6e766fb0429d51300e"
+  integrity sha512-3zvEH4szxTHjpNIbuSXY3aIByv6fUao8ZYOqtYucmgduRR+r0c94xMJvrPKyAj9hgWZTJ/0I//PMq+SDZp3MCw==
   dependencies:
     attr-accept "^1.1.3"
     prop-types "^15.6.2"
@@ -3823,15 +3828,15 @@ react-transition-group@^2.2.1:
     prop-types "^15.6.2"
     react-lifecycles-compat "^3.0.4"
 
-react@^16.6.0:
-  version "16.7.0"
-  resolved "https://registry.yarnpkg.com/react/-/react-16.7.0.tgz#b674ec396b0a5715873b350446f7ea0802ab6381"
-  integrity sha512-StCz3QY8lxTb5cl2HJxjwLFOXPIFQp+p+hxQfc8WE0QiLfCtIlKj8/+5tjjKm8uSTlAW+fCPaavGFS06V9Ar3A==
+react@16.8.0-alpha.0:
+  version "16.8.0-alpha.0"
+  resolved "https://registry.yarnpkg.com/react/-/react-16.8.0-alpha.0.tgz#8545eb79534cce5ba99ed40085f7f955e8857a19"
+  integrity sha512-B/nJJkNqV4JAJQ1M0Q38ZvhZ6BoYsjyZq29hbsIIPYayn/0DcYhu7tExpfzdtTC0SnUcA+RnDBTlXTEJ5b9PEg==
   dependencies:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
     prop-types "^15.6.2"
-    scheduler "^0.12.0"
+    scheduler "^0.13.0-alpha.0"
 
 "readable-stream@1 || 2", readable-stream@^2.0.0, readable-stream@^2.0.1, readable-stream@^2.0.2, readable-stream@^2.0.4, readable-stream@^2.0.6, readable-stream@^2.1.5, readable-stream@^2.2.2, readable-stream@^2.3.3, readable-stream@^2.3.6, readable-stream@~2.3.6:
   version "2.3.6"
@@ -4046,10 +4051,10 @@ sax@^1.2.4:
   resolved "https://registry.yarnpkg.com/sax/-/sax-1.2.4.tgz#2816234e2378bddc4e5354fab5caa895df7100d9"
   integrity sha512-NqVDv9TpANUjFm0N8uM5GxL36UgKi9/atZw+x7YFnQ8ckwFGKrl4xX4yWtrey3UJm5nP1kUbnYgLopqWNSRhWw==
 
-scheduler@^0.12.0:
-  version "0.12.0"
-  resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.12.0.tgz#8ab17699939c0aedc5a196a657743c496538647b"
-  integrity sha512-t7MBR28Akcp4Jm+QoR63XgAi9YgCUmgvDHqf5otgAj4QvdoBE4ImCX0ffehefePPG+aitiYHp0g/mW6s4Tp+dw==
+scheduler@^0.13.0-alpha.0:
+  version "0.13.0-alpha.0"
+  resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.13.0-alpha.0.tgz#8fc1f01617b59e4543376735b2f954867d49110c"
+  integrity sha512-+DbRwO53hlLso4gzrSIqcfNe8eRMMaV4gd4eySGisbyLBrp5unTpAMR0UAbrqlQLTGhnOFNoQAfaZTz4iPj1RQ==
   dependencies:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"

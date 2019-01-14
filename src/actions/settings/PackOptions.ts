@@ -1,4 +1,4 @@
-import { BaseAction } from '../Base'
+import BaseAction from '../BaseAction'
 import { Signature } from 'phar'
 export { Signature }
 
@@ -25,27 +25,26 @@ export {
   StubAction,
 }
 
-export const
-  /**
-   * @param {SignatureType} - Signature enum
-   * @returns {SignatureAction}
-   */
-  setSignature = (payload: Signature) => ({
-    type: SignatureActionName, payload
-  } as SignatureAction),
+/**
+ * @param {SignatureType} - Signature enum
+ * @returns {SignatureAction}
+ */
+export function setSignature(payload: Signature): SignatureAction {
+  return { type: SignatureActionName, payload }
+}
 
-  /**
-   * @param {boolean} payload - Compress
-   * @returns {CompressAction}
-   */
-  setCompress = (payload: boolean) => ({
-    type: CompressActionName, payload
-  } as CompressAction),
+/**
+ * @param {boolean} payload - Compress
+ * @returns {CompressAction}
+ */
+export function setCompress(payload: boolean): CompressAction {
+  return { type: CompressActionName, payload }
+}
 
-  /**
-   * @param {string} payload - Stub
-   * @returns {StubAction}
-   */
-  setStub = (payload: string) => ({
-    type: StubActionName, payload,
-  } as StubAction)
+/**
+ * @param {string} payload - Stub
+ * @returns {StubAction}
+ */
+export function setStub(payload: string): StubAction {
+  return { type: StubActionName, payload }
+}

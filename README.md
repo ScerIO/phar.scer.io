@@ -2,7 +2,7 @@
 
 ### Site implements [PWA][google-pwa]
 ## You can use it offline!
-___
+
 ## Local start
 Run `yarn start`
 

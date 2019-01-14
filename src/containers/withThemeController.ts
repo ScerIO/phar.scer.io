@@ -1,23 +1,27 @@
 import { Dispatch, connect } from 'react-redux'
-import { State as StateProps } from 'reducers/UI'
-import { setUISettingsModal } from 'actions/UI'
+import { setTheme, ThemeType } from 'actions/settings/Theme'
 import { ApplicationState } from 'reducers/Root'
+export { ThemeType }
+
+export interface StateProps {
+  theme?: ThemeType
+}
 
 export interface DispatchProps {
-  setUISettingsModal?: typeof setUISettingsModal
+  setTheme?(theme: ThemeType): void
 }
 
 export type Props = StateProps & DispatchProps
 
 const
   mapStateToProps = (state: ApplicationState): StateProps => ({
-    settingsModal: state.ui.settingsModal,
+    theme: state.settings.theme,
   }),
   mapDispatchToProps = (dispatch: Dispatch<DispatchProps>) => ({
-    setUISettingsModal: (uiSettingsModal: boolean) => dispatch(setUISettingsModal(uiSettingsModal)),
+    setTheme: (theme: ThemeType) => dispatch(setTheme(theme)),
   }),
-  withUISettingsModal = <P extends Props>(
+  withThemeController = <P extends Props>(
     WrappedComponent: React.ComponentType<P>,
   ) => connect<StateProps>(mapStateToProps, mapDispatchToProps)(WrappedComponent)
 
-export default withUISettingsModal
+export default withThemeController

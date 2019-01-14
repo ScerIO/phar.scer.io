@@ -1,4 +1,4 @@
-import { BaseAction } from './Base'
+import BaseAction from './BaseAction'
 
 export enum InternetStatusType {
   online,
@@ -15,6 +15,6 @@ export interface InternetStatusAction extends BaseAction {
  * @param {InternetStatusType} payload - Internet status
  * @returns {InternetStatusAction}
  */
-export const setInternetStatus = (payload: InternetStatusType) => ({
-  type: InternetStatusActionName, payload,
-} as InternetStatusAction)
+export function setInternetStatus(payload: InternetStatusType): InternetStatusAction {
+  return { type: InternetStatusActionName, payload }
+}
