@@ -1,31 +1,37 @@
-import * as React from 'react'
+import React from 'react'
+import { observer, inject as injectStore } from 'mobx-react'
 import Snackbar from '@material-ui/core/Snackbar'
-import withNotification, { Props, NotificationLength } from './withNotification'
+import NotificationContent from 'components/NotificationContent'
+import { NotificationStore, NotificationType } from 'store/Notification'
 
-function Notification({
-  _notification,
-  clearNotification,
-}: Props) {
-  function handleClose(_event: React.SyntheticEvent<any, Event>, reason: string) {
-    if (reason !== 'clickaway') clearNotification()
+interface Props {
+  notificationStore?: NotificationStore
+}
+
+function Notification({ notificationStore }: Props) {
+  function handleClose(_event: React.SyntheticEvent, reason: string) {
+    if (reason === 'clickaway') return
+    notificationStore.close()
   }
 
+  const { detail } = notificationStore
+
   return (
-
-
     <Snackbar
       anchorOrigin={{
         vertical: 'bottom',
         horizontal: 'right',
       }}
-      open={_notification !== null}
-      autoHideDuration={_notification && _notification.length || NotificationLength.short }
-      onClose={handleClose}
-      ContentProps={{
-        'aria-describedby': 'message-id',
-      }}
-      message={<span id='message-id'>{_notification && _notification.message}</span>} />
+      open={detail !== null}
+      onClose={handleClose}>
+      {detail &&
+        <NotificationContent
+          onClose={handleClose}
+          variant={detail.type || NotificationType.INFO}
+          message={detail.message || ''}/>
+      }
+    </Snackbar>
   )
 }
 
-export default withNotification(Notification)
+export default injectStore('notificationStore')(observer(Notification))

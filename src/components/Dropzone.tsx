@@ -1,9 +1,8 @@
 import * as React from 'react'
 import Paper from '@material-ui/core/Paper'
 import ReactDropzone from 'react-dropzone'
-import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles'
+import { createStyles, withStyles, WithStyles } from '@material-ui/styles'
 import { Theme } from '@material-ui/core/styles/createMuiTheme'
-import createStyles from '@material-ui/core/styles/createStyles'
 
 const styles = (theme: Theme) => createStyles({
   root: {
@@ -30,7 +29,7 @@ const styles = (theme: Theme) => createStyles({
     justifyContent: 'center',
     alignItems: 'center',
   },
-});
+})
 
 interface Props extends WithStyles<typeof styles> {
   onSuccess: (files: File[]) => void
@@ -40,7 +39,7 @@ interface State {
   elevation: number
 }
 
-class Dropzone extends React.Component<Props, State> {
+class DropZone extends React.Component<Props, State> {
   public state: State = {
     elevation: 1
   }
@@ -78,4 +77,4 @@ class Dropzone extends React.Component<Props, State> {
   }
 }
 
-export default withStyles(styles)(Dropzone)
+export default withStyles(styles)(DropZone)

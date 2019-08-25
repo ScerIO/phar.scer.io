@@ -1,6 +1,5 @@
 import * as React from 'react'
-import withPackOptions, { Props as PackProps, Signature } from 'containers/withPackOptions'
-import { withI18n, WithI18n } from 'react-i18next'
+import { withTranslation, WithTranslation } from 'react-i18next'
 import Grid from '@material-ui/core/Grid'
 import Radio from '@material-ui/core/Radio'
 import RadioGroup from '@material-ui/core/RadioGroup'
@@ -9,21 +8,26 @@ import TextField from '@material-ui/core/TextField'
 import FormLabel from '@material-ui/core/FormLabel'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Divider from '@material-ui/core/Divider'
+import { inject, observer } from 'mobx-react'
+import { SettingsStore } from 'store/Settings'
+import { Signature } from 'phar'
+
+interface Props extends WithTranslation {
+  settingsStore?: SettingsStore
+}
 
 interface State {
   stub: string
 }
 
-type Props = PackProps & WithI18n
-
 export class PackOptions extends React.Component<Props, State> {
   public state = {
-    stub: this.props.stub,
+    stub: this.props.settingsStore.stub,
   }
 
   public render(): JSX.Element {
     const
-      { t } = this.props,
+      { t, settingsStore } = this.props,
       { stub } = this.state
 
     return (
@@ -33,7 +37,7 @@ export class PackOptions extends React.Component<Props, State> {
           <RadioGroup
             aria-label='signature'
             name='signature'
-            value={this.props.signature.toString()}
+            value={settingsStore.signature.toString()}
             onChange={this.handleSignatureChange}>
             {['MD5', 'SHA1', 'SHA256', 'SHA512'].map((method, index) =>
               <FormControlLabel key={index} value={Signature[method].toString()} control={<Radio />} label={method} />
@@ -44,7 +48,7 @@ export class PackOptions extends React.Component<Props, State> {
         <Grid item>
           <FormControlLabel
             control={<Switch
-              checked={this.props.compress}
+              checked={settingsStore.compress}
               onChange={this.handleCompressChange}
             />}
             label={t('compress')}
@@ -68,16 +72,17 @@ export class PackOptions extends React.Component<Props, State> {
   }
 
   private handleSignatureChange = (_event: React.ChangeEvent<{}>, value: string) =>
-    this.props.setSignature(Number(value))
+    this.props.settingsStore.setSignature(Number(value))
 
   private handleCompressChange = (_event: React.ChangeEvent<{}>, checked: boolean) =>
-    this.props.setCompress(Boolean(checked))
+    this.props.settingsStore.setCompress(Boolean(checked))
+
+  private handleStubBlur = (event: React.ChangeEvent<HTMLInputElement>) =>
+    this.props.settingsStore.setStub(String(event.target.value))
 
   private handleStubChange = (event: React.ChangeEvent<HTMLInputElement>) =>
     this.setState({ stub: event.target.value })
-
-  private handleStubBlur = (event: React.ChangeEvent<HTMLInputElement>) =>
-    this.props.setStub(String(event.target.value))
 }
 
-export default withPackOptions(withI18n()(PackOptions))
+// export default withPackOptions(withTranslation()(PackOptions)) // inject('settingsStore')(
+export default withTranslation()(inject('settingsStore')(observer(PackOptions))) // inject('settingsStore')(

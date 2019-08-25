@@ -1,64 +1,123 @@
 import * as React from 'react'
 import withWidth, { isWidthUp, WithWidth } from '@material-ui/core/withWidth'
-import { withI18n, WithI18n } from 'react-i18next'
-import { pharToZip, zipToPhar, ZipToPharOptions } from 'utils/phar'
+import { withTranslation, WithTranslation } from 'react-i18next'
 import debug from 'utils/debug'
 import { saveAs } from 'file-saver'
-import DropArea from 'components/Dropzone'
+import DropZone from 'components/DropZone'
 import Typography from '@material-ui/core/Typography'
-import withPackOptions, { Props as PackOptionsProps } from './withPackOptions'
-import withNotification, { Props as NotificationProps } from './withNotification'
-import { NotificationType, NotificationLength } from 'actions/Notification'
+import CircularProgress from '@material-ui/core/CircularProgress'
+import { inject } from 'mobx-react'
+import { SettingsStore } from 'store/Settings'
+import { NotificationStore, NotificationType, NotificationLength } from 'store/Notification'
+import PharWorker from 'worker-loader!../utils/phar.worker.ts'
+import { processFile } from 'utils/phar'
 
-type Props = WithWidth & WithI18n & PackOptionsProps & NotificationProps
+interface Props extends WithWidth, WithTranslation {
+  settingsStore?: SettingsStore
+  notificationStore?: NotificationStore
+}
 
-async function processFile(file: File, options: ZipToPharOptions): Promise<{ blob: Blob, fileName: string }> {
-  const extension = file.name.split('.').pop()
-  switch (extension) {
-    case 'phar':
-      return pharToZip(file)
-    case 'zip':
-      return zipToPhar(file, options)
-    default:
-      throw new Error(`Error: file '${file.name}' has an unsupported format '.${extension}'`)
+interface State {
+  processIsRunned: boolean
+}
+
+
+interface ResultEvent extends Event {
+  data: {
+    blob: Blob
+    fileName: string
   }
 }
 
-function PharConverter({
-  width,
-  t,
-  signature,
-  stub,
-  compress,
-  notification,
-}: Props) {
-  async function process(files: File[]) {
-    try {
-      for (const file of files) {
-        const result = await processFile(file, {
+class PharConverter extends React.Component<Props, State> {
+  public state = {
+    processIsRunned: false
+  }
+  private worker: Worker
+
+  public componentDidMount() {
+    if (typeof (Worker) !== 'undefined') {
+      this.worker = new PharWorker()
+
+      this.worker.addEventListener('message', (event: ResultEvent) =>
+        this.handleSuccess(event.data.blob, event.data.fileName)
+      )
+
+      this.worker.addEventListener('error', (event: ErrorEvent) =>
+        this.handleError(event.error)
+      )
+    }
+  }
+
+  public render(): JSX.Element {
+    const { width, t } = this.props
+    const { processIsRunned } = this.state
+
+    return (
+      <DropZone onSuccess={this.process}>
+        {processIsRunned
+          ? <CircularProgress color='secondary' />
+          : <Typography component='h2' variant='h5' align='center'>
+            {isWidthUp('sm', width) ? t('select-or-drop') : t('select-file')}
+          </Typography>}
+      </DropZone>
+    )
+  }
+
+  private process = async (files: File[]) => {
+    const {
+      signature,
+      stub,
+      compress,
+    } = this.props.settingsStore
+    this.setState({
+      processIsRunned: true,
+    })
+    for (const file of files) {
+      if (typeof (Worker) !== 'undefined') {
+        this.worker.postMessage({
+          file,
           signature,
           stub,
           compress,
         })
-        saveAs(result.blob, result.fileName)
+      } else {
+        try {
+          processFile(file, {
+            signature,
+            stub,
+            compress,
+          }).then((value) => this.handleSuccess(value.blob, value.fileName))
+        } catch (error) {
+          this.handleError(error)
+        }
       }
-    } catch ({ message }) {
-      notification({
-        message,
-        type: NotificationType.error,
-        length: NotificationLength.long,
-      })
-      debug(() => console.error(message))
     }
   }
 
-  return (
-    <DropArea onSuccess={process}>
-      <Typography component='h2' variant='h5' align='center'>
-        {isWidthUp('sm', width) ? t('select-or-drop') : t('select-file')}
-      </Typography>
-    </DropArea>
-  )
+  private handleSuccess(blob: Blob, fileName: string) {
+    saveAs(blob, fileName)
+    this.props.notificationStore.notify({
+      message: this.props.t('success'),
+      type: NotificationType.SUCCESS,
+      length: NotificationLength.SHORT,
+    })
+    this.setState({
+      processIsRunned: false,
+    })
+  }
+
+  private handleError(error: Error) {
+    debug(() => console.error(error.message))
+    this.props.notificationStore.notify({
+      message: error.message,
+      type: NotificationType.ERROR,
+      length: NotificationLength.LONG,
+    })
+    this.setState({
+      processIsRunned: false,
+    })
+  }
 }
 
-export default withNotification(withPackOptions(withWidth()(withI18n()(PharConverter)))) as React.ComponentType
+export default inject('settingsStore', 'notificationStore')(withWidth()(withTranslation()(PharConverter))) as React.ComponentType

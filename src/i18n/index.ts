@@ -1,6 +1,6 @@
 import i18n from 'i18next'
-import * as LanguageDetector from 'i18next-browser-languagedetector'
-import { reactI18nextModule } from 'react-i18next'
+import LanguageDetector from 'i18next-browser-languagedetector'
+import { initReactI18next } from 'react-i18next'
 import {
   en,
   ru,
@@ -8,7 +8,7 @@ import {
 
 i18n
   .use(LanguageDetector)
-  .use(reactI18nextModule)
+  .use(initReactI18next)
   .init({
     resources: {
       en: {

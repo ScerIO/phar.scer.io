@@ -7,6 +7,7 @@ export default {
   'signature': 'Signature',
   'compress': 'Compress',
   'stub': 'Stub',
+  'success': 'Success',
   'how-to-use': {
     'title': 'How to use?',
     'content': `To unpack the PHAR archive, you need to click on the area below or drag the * .phar file into it with the mouse. As a result of unpacking, you will receive a ZIP archive. <br />

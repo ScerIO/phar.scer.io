@@ -39,7 +39,7 @@ mode === 'production' &&
   )
 
 const seoFiles = (fs.existsSync('./seo/'))
-  ? [{from: './seo/', to: './'}]
+  ? [{ from: './seo/', to: './' }]
   : []
 
 module.exports = {
@@ -57,7 +57,7 @@ module.exports = {
   devtool: mode === 'production' ? false : 'source-map',
 
   resolve: {
-    extensions: ['.ts', '.tsx', '.js', '.json'],
+    extensions: ['.ts', '.tsx', '.js', '.mjs', '.json'],
     alias: {
       'theme': path.resolve(__dirname, 'src/theme'),
       'components': path.resolve(__dirname, 'src/components'),
@@ -72,15 +72,21 @@ module.exports = {
 
   module: {
     rules: [{
+      test: /\.mjs$/,
+      type: 'javascript/auto'
+    }, {
       test: /\.tsx?$/,
-      loader: ['ts-loader'],
-    },{
+      loader: 'ts-loader',
+    }, {
       test: /\.(ico|svg|png|jpg)$/,
       loader: 'file-loader',
       options: {
         name: '[name].[ext]',
         outputPath: 'assets/',
       },
+    }, {
+      test: /\.worker\.js$/,
+      loader: 'worker-loader',
     }]
   },
 
@@ -103,21 +109,31 @@ module.exports = {
       template: './src/index.html',
     }),
     new CopyWebpackPlugin([{
-        from: './src/manifest.json',
-        to: './',
-      }, {
-        from: './src/browserconfig.xml',
-        to: './',
-      }, {
-        from: './src/assets/icons',
-        to: './assets/icons',
-      },
-      ...seoFiles,
+      from: './src/manifest.json',
+      to: './',
+    }, {
+      from: './src/browserconfig.xml',
+      to: './',
+    }, {
+      from: './src/assets/icons',
+      to: './assets/icons',
+    },
+    ...seoFiles,
     ]),
     new webpack.EnvironmentPlugin(['NODE_ENV']),
     new webpack.DefinePlugin({
       'appVersion': JSON.stringify(version),
       'homepageUrl': JSON.stringify(homepage),
+    }),
+    new webpack.LoaderOptionsPlugin({
+      options: {
+        worker: {
+          output: {
+            filename: `${__dirname}/src/utils/worker.ts`,
+            chunkFilename: 'worker.js'
+          }
+        }
+      }
     }),
     ...plugins,
   ],

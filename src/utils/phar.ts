@@ -43,3 +43,15 @@ export async function pharToZip(file: File) {
     fileName,
   }
 }
+
+export async function processFile(file: File, options: ZipToPharOptions): Promise<{ blob: Blob, fileName: string }> {
+  const extension = file.name.split('.').pop()
+  switch (extension) {
+    case 'phar':
+      return pharToZip(file)
+    case 'zip':
+      return zipToPhar(file, options)
+    default:
+      throw new Error(`Error: file '${file.name}' has an unsupported format '.${extension}'`)
+  }
+}

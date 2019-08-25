@@ -1,23 +1,24 @@
 import * as React from 'react'
-import withThemeController, { Props as ThemeControllerProps, ThemeType } from './withThemeController'
 import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import * as Themes from 'theme'
+import { inject, observer } from 'mobx-react'
+import { SettingsStore, ThemeType } from 'store/Settings'
 
-interface Props extends ThemeControllerProps {
+interface Props {
   children: React.ReactNode
+  settingsStore?: SettingsStore
 }
 
-function ThemeProvider({
-  theme,
+const ThemeProvider = ({
+  settingsStore: {
+    theme,
+  },
   children,
-}: Props) {
-  return (
-    <MuiThemeProvider theme={Themes[ThemeType[theme]]}>
-      <CssBaseline />
-      {children}
-    </MuiThemeProvider>
-  )
-}
+}: Props) =>
+  <MuiThemeProvider theme={Themes[ThemeType[theme]]}>
+    <CssBaseline />
+    {children}
+  </MuiThemeProvider>
 
-export default withThemeController(ThemeProvider)
+export default inject('settingsStore')(observer(ThemeProvider))

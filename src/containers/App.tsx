@@ -1,8 +1,5 @@
 import * as React from 'react'
-
-import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles'
-import createStyles from '@material-ui/core/styles/createStyles'
-
+import { createStyles, withStyles, WithStyles } from '@material-ui/styles'
 import Grid from '@material-ui/core/Grid'
 import Grow from '@material-ui/core/Grow'
 import CenteredContainer from 'components/CenteredContainer'
@@ -24,7 +21,7 @@ const styles = (theme: Theme) => createStyles({
   },
   content: {
     flex: 1,
-    padding: theme.spacing.unit * 2,
+    padding: theme.spacing(12),
   },
 })
 
