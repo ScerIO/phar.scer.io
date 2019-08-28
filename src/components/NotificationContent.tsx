@@ -1,5 +1,5 @@
 import React from 'react'
-import { createStyles, withStyles, WithStyles } from '@material-ui/styles'
+import { makeStyles } from '@material-ui/styles'
 import { Theme } from '@material-ui/core/styles/createMuiTheme'
 import CheckCircleIcon from '@material-ui/icons/CheckCircle'
 import ErrorIcon from '@material-ui/icons/Error'
@@ -11,6 +11,7 @@ import amber from '@material-ui/core/colors/amber'
 import IconButton from '@material-ui/core/IconButton'
 import SnackbarContentUI from '@material-ui/core/SnackbarContent'
 import { NotificationType } from 'store/Notification'
+import Typography from '@material-ui/core/Typography'
 
 const variantIcon = {
   success: CheckCircleIcon,
@@ -19,13 +20,13 @@ const variantIcon = {
   info: InfoIcon,
 }
 
-interface Props extends WithStyles<typeof styles> {
+interface IProps {
   message: string
   variant: NotificationType
   onClose(...args: any): void
 }
 
-const styles = (theme: Theme) => createStyles({
+const useStyles = makeStyles((theme: Theme) => ({
   success: {
     backgroundColor: green[600],
   },
@@ -50,32 +51,31 @@ const styles = (theme: Theme) => createStyles({
     display: 'flex',
     alignItems: 'center',
   },
-})
+}))
 
-function NotificationContent({
-  classes,
+export default function NotificationContent({
   message,
   onClose,
   variant,
   ...props
-}: Props) {
+}: IProps) {
   const Icon = variantIcon[variant]
+  const classes = useStyles({})
 
   return (
     <SnackbarContentUI
       className={classes[variant]}
       aria-describedby='client-snackbar'
       message={
-        <span id='client-snackbar' className={classes.message}>
+        <Typography id='client-snackbar' color='textPrimary' className={classes.message}>
           <Icon className={classes.iconVariant} />
           {message}
-        </span>
+        </Typography>
       }
       action={[
         <IconButton
           key='close'
           aria-label='Close'
-          color='inherit'
           onClick={onClose}>
           <CloseIcon className={classes.icon} />
         </IconButton>,
@@ -84,5 +84,3 @@ function NotificationContent({
     />
   )
 }
-
-export default withStyles(styles)(NotificationContent)

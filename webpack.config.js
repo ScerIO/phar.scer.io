@@ -10,7 +10,19 @@ const
 const mode = process.env.NODE_ENV || 'development',
   plugins = []
 
-mode === 'production' &&
+const seoFiles = (fs.existsSync('./seo/'))
+  ? [{ from: './seo/', to: './' }]
+  : []
+
+const etrypoint = [`${__dirname}/src/index.tsx`]
+
+if (mode === 'development') {
+  // path = output.publicPath + __webpack_hmr
+  etrypoint.push('webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=true')
+  plugins.push(
+    new webpack.HotModuleReplacementPlugin()
+  )
+} else if (mode == 'production') {
   plugins.push(
     new OfflinePlugin({
       safeToUseOptionalCaches: true,
@@ -37,24 +49,21 @@ mode === 'production' &&
       },
     }),
   )
-
-const seoFiles = (fs.existsSync('./seo/'))
-  ? [{ from: './seo/', to: './' }]
-  : []
+}
 
 module.exports = {
   mode,
 
-  entry: {
-    app: `${__dirname}/src/index.tsx`,
-  },
+  entry: etrypoint,
 
   output: {
     path: `${__dirname}/build`,
     filename: '[name].bundle.js',
+    publicPath: '/',
+    globalObject: 'this'
   },
 
-  devtool: mode === 'production' ? false : 'source-map',
+  devtool: mode === 'production' ? false : 'inline-source-map',
 
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.mjs', '.json'],
@@ -64,9 +73,8 @@ module.exports = {
       'containers': path.resolve(__dirname, 'src/containers'),
       'i18n': path.resolve(__dirname, 'src/i18n'),
       'utils': path.resolve(__dirname, 'src/utils'),
-      'actions': path.resolve(__dirname, 'src/actions'),
-      'reducers': path.resolve(__dirname, 'src/reducers'),
       'store': path.resolve(__dirname, 'src/store'),
+      'react-dom': '@hot-loader/react-dom',
     }
   },
 
@@ -92,6 +100,7 @@ module.exports = {
 
   optimization: {
     minimize: mode === 'production',
+    nodeEnv: process.env.NODE_ENV || 'development',
     splitChunks: {
       cacheGroups: {
         vendor: {
@@ -112,15 +121,11 @@ module.exports = {
       from: './src/manifest.json',
       to: './',
     }, {
-      from: './src/browserconfig.xml',
-      to: './',
-    }, {
       from: './src/assets/icons',
       to: './assets/icons',
     },
     ...seoFiles,
     ]),
-    new webpack.EnvironmentPlugin(['NODE_ENV']),
     new webpack.DefinePlugin({
       'appVersion': JSON.stringify(version),
       'homepageUrl': JSON.stringify(homepage),
@@ -137,8 +142,4 @@ module.exports = {
     }),
     ...plugins,
   ],
-
-  devServer: {
-    host: '0.0.0.0',
-  },
 }

@@ -16,7 +16,7 @@ i18n
       },
       ru: {
         translations: ru,
-      }
+      },
     },
     fallbackLng: 'en',
     debug: process.env.NODE_ENV !== 'production',
@@ -28,11 +28,11 @@ i18n
 
     interpolation: {
       escapeValue: false,
-      formatSeparator: ','
+      formatSeparator: ',',
     },
 
     react: {
-      wait: true
+      wait: true,
     },
   })
 

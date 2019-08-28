@@ -1,0 +1,14 @@
+{
+  "extends": "tslint:recommended",
+  "rules": {
+    "one-variable-per-declaration": false,
+    "linebreak-style": [true, "CRLF"],
+    "quotemark": [true, "single", "avoid-escape", "avoid-template"],
+    "no-console": false,
+    "ordered-imports": false,
+    "object-literal-sort-keys": false,
+    "curly": [true, "ignore-same-line"],
+    "semicolon": [true, "never"],
+    "no-var-requires": false
+  }
+}

@@ -1,11 +1,12 @@
 import { observable, action } from 'mobx'
 
-export interface NotificationDetail {
+export interface INotificationDetail {
   message: string
   type: NotificationType
+  isTranslatable?: boolean
 }
 
-interface NotifyArgs extends NotificationDetail {
+interface INotifyArgs extends INotificationDetail {
   length: NotificationLength,
 }
 
@@ -22,31 +23,34 @@ export enum NotificationLength {
 }
 
 export class NotificationStore {
-  @observable detail: NotificationDetail = null
+  @observable
+  public detail: INotificationDetail = null
 
-  timeoutCallback: Function = null
+  public timeoutCallback: () => void = null
 
   @action
-  notify = ({
+  public notify = ({
     message,
     type = NotificationType.INFO,
     length = NotificationLength.SHORT,
-  }: NotifyArgs) => new Promise((resolve) => {
-    let timeout: number
+    isTranslatable = true,
+  }: INotifyArgs) => new Promise((resolve) => {
+    let timeout: NodeJS.Timeout | number
     this.detail = {
       type,
       message,
+      isTranslatable,
     }
     this.timeoutCallback = () => {
       this.detail = null
       resolve()
-      clearTimeout(timeout)
+      clearTimeout(timeout as NodeJS.Timeout)
     }
     timeout = setTimeout(this.timeoutCallback, length)
   })
 
   @action
-  close = () => this.timeoutCallback()
+  public close = () => this.timeoutCallback()
 }
 
 export const notificationStore = new NotificationStore()

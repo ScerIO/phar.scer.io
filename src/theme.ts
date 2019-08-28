@@ -11,7 +11,7 @@ export const light = createMuiTheme({
       main: mainLightColor,
     },
     secondary: {
-      main: green[400]
+      main: green[400],
     },
   },
 })
@@ -24,13 +24,13 @@ export const dark = createMuiTheme({
       main: mainDarkColor,
     },
     secondary: {
-      main: green[400]
+      main: green[400],
     },
   },
 })
 
 export function getMainColorByTheme(theme: ThemeType) {
-  switch(theme) {
+  switch (theme) {
     case ThemeType.light:
       return mainLightColor
     case ThemeType.dark:

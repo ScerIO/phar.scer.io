@@ -6,7 +6,8 @@ export enum ConnectionStatus {
 }
 
 export class ConnectionStatusStore {
-  @observable status: ConnectionStatus = ConnectionStatus.online
+  @observable
+  public status: ConnectionStatus = ConnectionStatus.online
 
   public constructor() {
     window.addEventListener('online', this.updateOnlineStatus)
@@ -14,14 +15,14 @@ export class ConnectionStatusStore {
   }
 
   @action
-  public updateOnlineStatus = (_event: Event) => {
+  public updateOnlineStatus = (_: Event) => {
     this.status = navigator.onLine
       ? ConnectionStatus.online
       : ConnectionStatus.offline
   }
 
   get isOnline(): boolean {
-    return this.status == ConnectionStatus.online
+    return this.status === ConnectionStatus.online
   }
 }
 

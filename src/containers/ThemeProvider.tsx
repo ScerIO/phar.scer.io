@@ -5,7 +5,7 @@ import * as Themes from 'theme'
 import { inject, observer } from 'mobx-react'
 import { SettingsStore, ThemeType } from 'store/Settings'
 
-interface Props {
+interface IProps {
   children: React.ReactNode
   settingsStore?: SettingsStore
 }
@@ -15,7 +15,7 @@ const ThemeProvider = ({
     theme,
   },
   children,
-}: Props) =>
+}: IProps) =>
   <MuiThemeProvider theme={Themes[ThemeType[theme]]}>
     <CssBaseline />
     {children}

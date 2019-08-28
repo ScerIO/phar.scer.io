@@ -12,16 +12,16 @@ import { inject, observer } from 'mobx-react'
 import { SettingsStore } from 'store/Settings'
 import { Signature } from 'phar'
 
-interface Props extends WithTranslation {
+interface IProps extends WithTranslation {
   settingsStore?: SettingsStore
 }
 
-interface State {
+interface IState {
   stub: string
 }
 
-export class PackOptions extends React.Component<Props, State> {
-  public state = {
+export class PackOptions extends React.Component<IProps, IState> {
+  public state: IState = {
     stub: this.props.settingsStore.stub,
   }
 
@@ -40,7 +40,11 @@ export class PackOptions extends React.Component<Props, State> {
             value={settingsStore.signature.toString()}
             onChange={this.handleSignatureChange}>
             {['MD5', 'SHA1', 'SHA256', 'SHA512'].map((method, index) =>
-              <FormControlLabel key={index} value={Signature[method].toString()} control={<Radio />} label={method} />
+              <FormControlLabel
+                key={index}
+                value={Signature[method].toString()}
+                control={<Radio />}
+                label={method}/>,
             )}
           </RadioGroup>
         </Grid>
@@ -71,10 +75,10 @@ export class PackOptions extends React.Component<Props, State> {
     )
   }
 
-  private handleSignatureChange = (_event: React.ChangeEvent<{}>, value: string) =>
+  private handleSignatureChange = (_: React.ChangeEvent<{}>, value: string) =>
     this.props.settingsStore.setSignature(Number(value))
 
-  private handleCompressChange = (_event: React.ChangeEvent<{}>, checked: boolean) =>
+  private handleCompressChange = (_: React.ChangeEvent<{}>, checked: boolean) =>
     this.props.settingsStore.setCompress(Boolean(checked))
 
   private handleStubBlur = (event: React.ChangeEvent<HTMLInputElement>) =>

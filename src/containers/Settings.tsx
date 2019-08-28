@@ -16,14 +16,11 @@ import Grid from '@material-ui/core/Grid'
 import { inject, observer } from 'mobx-react'
 import { SettingsStore, ThemeType } from 'store/Settings'
 
-interface OriginProps {
-  open: boolean
-  onClose(): void
-}
-
-interface Props extends OriginProps, WithTranslation {
+interface IProps extends WithTranslation {
   fullScreen?: boolean
   settingsStore?: SettingsStore
+  open: boolean
+  onClose(): void
 }
 
 function Settings({
@@ -32,7 +29,7 @@ function Settings({
   onClose,
   settingsStore,
   i18n,
-}: Props) {
+}: IProps) {
   function changeTheme(event: React.ChangeEvent<HTMLSelectElement>) {
     settingsStore.setTheme(ThemeType[event.target.value])
   }
@@ -75,4 +72,4 @@ function Settings({
   )
 }
 
-export default inject('settingsStore')(observer(withMobileDialog()(withTranslation()(Settings)))) as React.ComponentType<OriginProps>
+export default inject('settingsStore')(observer(withMobileDialog()(withTranslation()(Settings))))

@@ -12,9 +12,9 @@ import { withTranslation, WithTranslation } from 'react-i18next'
 import { inject, observer } from 'mobx-react'
 import { ConnectionStatusStore } from 'store/ConnectionStatus'
 
-interface Props extends WithWidth, WithTranslation {
-  settingsClick(): void
+interface IProps extends WithWidth, WithTranslation {
   connectionStatusStore?: ConnectionStatusStore
+  settingsClick(): void
 }
 
 const Header = ({
@@ -22,7 +22,7 @@ const Header = ({
   width,
   settingsClick,
   t,
-}: Props) =>
+}: IProps) =>
   <Collapse direction='down' in={true} timeout={1200}>
     <MaterialAppBar position='static'>
       <Toolbar>

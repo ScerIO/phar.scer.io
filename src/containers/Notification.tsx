@@ -1,15 +1,16 @@
 import React from 'react'
+import { withTranslation, WithTranslation } from 'react-i18next'
 import { observer, inject as injectStore } from 'mobx-react'
 import Snackbar from '@material-ui/core/Snackbar'
 import NotificationContent from 'components/NotificationContent'
 import { NotificationStore, NotificationType } from 'store/Notification'
 
-interface Props {
+interface IProps extends  WithTranslation {
   notificationStore?: NotificationStore
 }
 
-function Notification({ notificationStore }: Props) {
-  function handleClose(_event: React.SyntheticEvent, reason: string) {
+function Notification({ notificationStore, t }: IProps) {
+  function handleClose(_: React.SyntheticEvent, reason: string) {
     if (reason === 'clickaway') return
     notificationStore.close()
   }
@@ -28,10 +29,12 @@ function Notification({ notificationStore }: Props) {
         <NotificationContent
           onClose={handleClose}
           variant={detail.type || NotificationType.INFO}
-          message={detail.message || ''}/>
+          message={!detail.isTranslatable
+            ? detail.message || ''
+            : t(detail.message)}/>
       }
     </Snackbar>
   )
 }
 
-export default injectStore('notificationStore')(observer(Notification))
+export default withTranslation()(injectStore('notificationStore')(observer(Notification)))

@@ -1,14 +1,15 @@
-import { ZipToPharOptions, processFile } from './phar'
+import { IZipToPharOptions, processFile } from './phar'
 
-interface PharConvertEvent extends Event {
-  data: PharConvertEventData
+interface IPharConvertEvent extends Event {
+  data: IPharConvertEventData
 }
 
-interface PharConvertEventData extends ZipToPharOptions {
-  file: File,
+interface IPharConvertEventData extends IZipToPharOptions {
+  file: File
 }
 
-self.addEventListener('message', async function (event: PharConvertEvent) {
+self.addEventListener('message', async (event: IPharConvertEvent) => {
   const result = await processFile(event.data.file, event.data)
-  self.postMessage(result, null)
+  const mySelf = (self as any)
+  mySelf.postMessage(result, null)
 }, false)

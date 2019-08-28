@@ -6,9 +6,9 @@ import { Theme } from '@material-ui/core/styles/createMuiTheme'
 
 const styles = (theme: Theme) => createStyles({
   root: {
-    transition: 'all .3s ease-in',
-    height: '90vw',
-    width: '90vw',
+    'transition': 'all .3s ease-in',
+    'height': '90vw',
+    'width': '90vw',
     [theme.breakpoints.up('md')]: {
       height: '400px',
       width: '400px',
@@ -19,7 +19,7 @@ const styles = (theme: Theme) => createStyles({
     },
     '& div:focus': {
       outline: 'none',
-    }
+    },
   },
   dropzone: {
     padding: 40,
@@ -31,17 +31,17 @@ const styles = (theme: Theme) => createStyles({
   },
 })
 
-interface Props extends WithStyles<typeof styles> {
+interface IProps extends WithStyles<typeof styles> {
   onSuccess: (files: File[]) => void
 }
 
-interface State {
+interface IState {
   elevation: number
 }
 
-class DropZone extends React.Component<Props, State> {
-  public state: State = {
-    elevation: 1
+class DropZone extends React.Component<IProps, IState> {
+  public state: IState = {
+    elevation: 1,
   }
 
   public render() {

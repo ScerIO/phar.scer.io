@@ -1,22 +1,22 @@
 // Set this to true for production
-var doCache = process.env.NODE_ENV === 'production'
+const doCache = process.env.NODE_ENV === 'production'
 
 // Name our cache
-var CACHE_NAME = `dictionary-v${appVersion}`
+const CACHE_NAME = `dictionary-v${appVersion}`
 
 // Delete old caches that are not our current one!
 self.addEventListener('activate', (event) => {
   const cacheWhitelist = [CACHE_NAME]
   event.waitUntil(
     caches.keys()
-      .then(keyList =>
-        Promise.all(keyList.map(key => {
+      .then((keyList) =>
+        Promise.all(keyList.map((key) => {
           if (!cacheWhitelist.includes(key)) {
             console.log('Deleting cache: ' + key)
             return caches.delete(key)
           }
-        }))
-      )
+        })),
+      ),
   )
 })
 
@@ -34,7 +34,7 @@ self.addEventListener('install', (event) => {
         cache.addAll(serviceWorkerOption.assets)
       })
       // @ts-ignore
-      .then(self.skipWaiting())
+      .then(self.skipWaiting()),
   )
 })
 
@@ -44,7 +44,7 @@ self.addEventListener('fetch', (event) => {
   if (!doCache) return
   event.respondWith(
     caches.match(event.request).then((response) =>
-      response || fetch(event.request)
-    )
+      response || fetch(event.request),
+    ),
   )
 })

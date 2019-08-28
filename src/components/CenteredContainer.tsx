@@ -1,7 +1,7 @@
 import * as React from 'react'
 import Grid from '@material-ui/core/Grid'
 
-interface Props {
+interface IProps {
   className?: string
   children: React.ReactNode
 }
@@ -9,7 +9,7 @@ interface Props {
 export default function CenteredContainer({
   children,
   className,
-}: Props) {
+}: IProps) {
   return (
     <Grid
       container

@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { createStyles, withStyles, WithStyles } from '@material-ui/styles'
+import { makeStyles } from '@material-ui/styles'
 import Grid from '@material-ui/core/Grid'
 import Grow from '@material-ui/core/Grow'
 import CenteredContainer from 'components/CenteredContainer'
@@ -8,12 +8,11 @@ import Settings from 'containers/Settings'
 import Header from 'containers/Header'
 import HowTo from 'containers/HowTo'
 import PharConverter from 'containers/PharConverter'
+import hmr from 'utils/hmr'
 
 import { Theme } from '@material-ui/core/styles/createMuiTheme'
 
-type Props = WithStyles<typeof styles>
-
-const styles = (theme: Theme) => createStyles({
+const useStyles = makeStyles((theme: Theme) => ({
   container: {
     minHeight: '100vh',
     display: 'flex',
@@ -21,14 +20,12 @@ const styles = (theme: Theme) => createStyles({
   },
   content: {
     flex: 1,
-    padding: theme.spacing(12),
+    padding: theme.spacing(2),
   },
-})
+}))
 
-function App({
-  classes,
-}: Props) {
-  const [ settingsOpen, setSettingsOpen ] = React.useState(false)
+function App() {
+  const [settingsOpen, setSettingsOpen] = React.useState(false)
 
   function openSettings() {
     setSettingsOpen(true)
@@ -37,6 +34,8 @@ function App({
   function closeSettings() {
     setSettingsOpen(false)
   }
+
+  const classes = useStyles({})
 
   return (
     <Grid className={classes.container}>
@@ -58,4 +57,4 @@ function App({
   )
 }
 
-export default withStyles(styles)(App)
+export default hmr(module)(App)
