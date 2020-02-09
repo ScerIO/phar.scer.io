@@ -2,20 +2,23 @@ import React from 'react'
 import { withTranslation, WithTranslation } from 'react-i18next'
 import { observer, inject as injectStore } from 'mobx-react'
 import Snackbar from '@material-ui/core/Snackbar'
-import NotificationContent from 'components/NotificationContent'
+import MuiAlert from '@material-ui/lab/Alert'
 import { NotificationStore, NotificationType } from 'store/Notification'
 
-interface IProps extends  WithTranslation {
+interface IProps extends WithTranslation {
   notificationStore?: NotificationStore
 }
 
 function Notification({ notificationStore, t }: IProps) {
-  function handleClose(_: React.SyntheticEvent, reason: string) {
-    if (reason === 'clickaway') return
+  function handleClose(_: React.SyntheticEvent) {
     notificationStore.close()
   }
 
   const { detail } = notificationStore
+
+  if (detail == null) {
+    return;
+  }
 
   return (
     <Snackbar
@@ -25,14 +28,15 @@ function Notification({ notificationStore, t }: IProps) {
       }}
       open={detail !== null}
       onClose={handleClose}>
-      {detail &&
-        <NotificationContent
-          onClose={handleClose}
-          variant={detail.type || NotificationType.INFO}
-          message={!detail.isTranslatable
-            ? detail.message || ''
-            : t(detail.message)}/>
-      }
+      <MuiAlert
+        elevation={6}
+        variant='filled'
+        onClose={handleClose}
+        severity={detail.type || NotificationType.INFO}>
+        {!detail.isTranslatable
+          ? detail.message || ''
+          : t(detail.message)}
+      </MuiAlert>
     </Snackbar>
   )
 }

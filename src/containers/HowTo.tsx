@@ -1,4 +1,5 @@
 import * as React from 'react'
+import ReactGA from 'react-ga'
 import { Theme } from '@material-ui/core/styles/createMuiTheme'
 import { makeStyles } from '@material-ui/styles'
 import { withTranslation, WithTranslation } from 'react-i18next'
@@ -23,13 +24,21 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }))
 
-function HowTo({
-  t,
-}: Props) {
+function _howToToggled(_: React.ChangeEvent<{}>, expanded: boolean) {
+  if (!expanded) {
+    return
+  }
+  ReactGA.event({
+    category: 'Onboarding',
+    action: 'How to open',
+  });
+}
+
+function HowTo({t}: Props) {
   const classes = useStyles({})
 
   return (
-    <ExpansionPanel className={classes.root}>
+    <ExpansionPanel className={classes.root} onChange={_howToToggled}>
       <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
         <Typography variant='subtitle1'>{t('how-to-use.title')}</Typography>
       </ExpansionPanelSummary>

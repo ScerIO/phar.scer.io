@@ -1,4 +1,5 @@
 import * as React from 'react'
+import ReactGA from 'react-ga'
 import Button from '@material-ui/core/Button'
 import Dialog from '@material-ui/core/Dialog'
 import DialogActions from '@material-ui/core/DialogActions'
@@ -31,6 +32,11 @@ function Settings({
   i18n,
 }: IProps) {
   function changeTheme(event: React.ChangeEvent<HTMLSelectElement>) {
+    ReactGA.event({
+      category: 'Settings',
+      action: 'Set theme',
+      label: event.target.value
+    });
     settingsStore.setTheme(ThemeType[event.target.value])
   }
 

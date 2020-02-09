@@ -1,5 +1,5 @@
 import * as React from 'react'
-import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider'
+import { ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline'
 import * as Themes from 'theme'
 import { inject, observer } from 'mobx-react'

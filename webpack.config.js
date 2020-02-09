@@ -14,51 +14,25 @@ const seoFiles = (fs.existsSync('./seo/'))
   ? [{ from: './seo/', to: './' }]
   : []
 
-const etrypoint = [`${__dirname}/src/index.tsx`]
+const entryPoint = [`${__dirname}/src/index.tsx`]
 
 if (mode === 'development') {
   // path = output.publicPath + __webpack_hmr
-  etrypoint.push('webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=true')
+  entryPoint.push('webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=true')
   plugins.push(
     new webpack.HotModuleReplacementPlugin()
-  )
-} else if (mode == 'production') {
-  plugins.push(
-    new OfflinePlugin({
-      safeToUseOptionalCaches: true,
-      caches: {
-        main: [
-          'app.bundle.js',
-          'vendor.bundle.js',
-          ':rest:',
-        ],
-        additional: [
-          ':externals:',
-        ],
-      },
-      externals: [
-        '/manifest.json',
-        '/browserconfig.xml',
-        '/assets/**/*.*',
-        '/',
-      ],
-      ServiceWorker: {
-        events: true,
-        navigateFallbackURL: '/',
-        publicPath: '/sw.js'
-      },
-    }),
   )
 }
 
 module.exports = {
   mode,
 
-  entry: etrypoint,
+  entry: entryPoint,
 
   output: {
     path: `${__dirname}/build`,
     filename: '[name].bundle.js',
+    chunkFilename: '[name].bundle.js',
     publicPath: '/',
     globalObject: 'this'
   },
@@ -72,6 +46,7 @@ module.exports = {
       'components': path.resolve(__dirname, 'src/components'),
       'containers': path.resolve(__dirname, 'src/containers'),
       'i18n': path.resolve(__dirname, 'src/i18n'),
+      'services': path.resolve(__dirname, 'src/services'),
       'utils': path.resolve(__dirname, 'src/utils'),
       'store': path.resolve(__dirname, 'src/store'),
       'react-dom': '@hot-loader/react-dom',
@@ -83,6 +58,17 @@ module.exports = {
       test: /\.mjs$/,
       type: 'javascript/auto'
     }, {
+      test: /\.worker\.ts$/,
+      use: [{
+        loader: 'worker-loader',
+        options: {
+          name: 'worker.js',
+          publicPath: '/',
+        },
+      }, {
+        loader: 'ts-loader',
+      }],
+    }, {
       test: /\.tsx?$/,
       loader: 'ts-loader',
     }, {
@@ -92,9 +78,6 @@ module.exports = {
         name: '[name].[ext]',
         outputPath: 'assets/',
       },
-    }, {
-      test: /\.worker\.js$/,
-      loader: 'worker-loader',
     }]
   },
 
@@ -130,15 +113,29 @@ module.exports = {
       'appVersion': JSON.stringify(version),
       'homepageUrl': JSON.stringify(homepage),
     }),
-    new webpack.LoaderOptionsPlugin({
-      options: {
-        worker: {
-          output: {
-            filename: `${__dirname}/src/utils/worker.ts`,
-            chunkFilename: 'worker.js'
-          }
-        }
-      }
+    new OfflinePlugin({
+      safeToUseOptionalCaches: true,
+      caches: {
+        main: [
+          'main.bundle.js',
+          'vendor.bundle.js',
+          'worker.js',
+          ':rest:',
+        ],
+        additional: [
+          ':externals:',
+        ],
+      },
+      externals: [
+        '/manifest.json',
+        '/assets/**/*.*',
+        '/',
+      ],
+      ServiceWorker: {
+        events: true,
+        navigateFallbackURL: '/',
+        publicPath: '/sw.js'
+      },
     }),
     ...plugins,
   ],

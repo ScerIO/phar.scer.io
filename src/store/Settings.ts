@@ -1,6 +1,6 @@
 import { observable, action } from 'mobx'
 import { Signature } from 'phar'
-import setThemeColor from 'utils/setThemeColor'
+import { setThemeColor } from 'utils'
 import { getMainColorByTheme } from 'theme'
 
 export enum ThemeType {

@@ -1,4 +1,5 @@
 import * as React from 'react'
+import ReactGA from 'react-ga'
 import { withTranslation, WithTranslation } from 'react-i18next'
 import Grid from '@material-ui/core/Grid'
 import Radio from '@material-ui/core/Radio'
@@ -44,7 +45,7 @@ export class PackOptions extends React.Component<IProps, IState> {
                 key={index}
                 value={Signature[method].toString()}
                 control={<Radio />}
-                label={method}/>,
+                label={method} />,
             )}
           </RadioGroup>
         </Grid>
@@ -75,14 +76,31 @@ export class PackOptions extends React.Component<IProps, IState> {
     )
   }
 
-  private handleSignatureChange = (_: React.ChangeEvent<{}>, value: string) =>
+  private handleSignatureChange = (_: React.ChangeEvent<{}>, value: string) => {
     this.props.settingsStore.setSignature(Number(value))
+    ReactGA.event({
+      category: 'Settings',
+      action: 'Set signature',
+      label: value,
+    })
+  }
 
-  private handleCompressChange = (_: React.ChangeEvent<{}>, checked: boolean) =>
+  private handleCompressChange = (_: React.ChangeEvent<{}>, checked: boolean) => {
     this.props.settingsStore.setCompress(Boolean(checked))
+    ReactGA.event({
+      category: 'Settings',
+      action: 'Set compress',
+      label: checked.toString(),
+    })
+  }
 
-  private handleStubBlur = (event: React.ChangeEvent<HTMLInputElement>) =>
+  private handleStubBlur = (event: React.FocusEvent<HTMLInputElement>) => {
     this.props.settingsStore.setStub(String(event.target.value))
+    ReactGA.event({
+      category: 'Settings',
+      action: 'Set stub',
+    })
+  }
 
   private handleStubChange = (event: React.ChangeEvent<HTMLInputElement>) =>
     this.setState({ stub: event.target.value })

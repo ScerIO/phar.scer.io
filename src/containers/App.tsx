@@ -1,5 +1,6 @@
 import * as React from 'react'
-import { makeStyles } from '@material-ui/styles'
+import ReactGA from 'react-ga'
+import { Theme, makeStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
 import Grow from '@material-ui/core/Grow'
 import CenteredContainer from 'components/CenteredContainer'
@@ -10,7 +11,6 @@ import HowTo from 'containers/HowTo'
 import PharConverter from 'containers/PharConverter'
 import hmr from 'utils/hmr'
 
-import { Theme } from '@material-ui/core/styles/createMuiTheme'
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
@@ -28,6 +28,7 @@ function App() {
   const [settingsOpen, setSettingsOpen] = React.useState(false)
 
   function openSettings() {
+    ReactGA.modalview('settings');
     setSettingsOpen(true)
   }
 

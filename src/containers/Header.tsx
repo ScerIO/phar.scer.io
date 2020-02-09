@@ -1,4 +1,7 @@
 import * as React from 'react'
+import ReactGA from 'react-ga'
+import { Theme } from '@material-ui/core/styles/createMuiTheme'
+import { makeStyles } from '@material-ui/styles'
 import MaterialAppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import Button from '@material-ui/core/Button'
@@ -17,32 +20,44 @@ interface IProps extends WithWidth, WithTranslation {
   settingsClick(): void
 }
 
+const useStyles = makeStyles((theme: Theme) => ({
+  githubButton: {
+    marginRight: theme.spacing(),
+  },
+}))
+
+function _githubPressed() {
+  ReactGA.event({
+    category: 'Social',
+    action: 'Github pressed',
+  });
+  window.open(homepageUrl, '_blank')
+}
+
 const Header = ({
   connectionStatusStore,
   width,
   settingsClick,
   t,
-}: IProps) =>
-  <Collapse direction='down' in={true} timeout={1200}>
+}: IProps) => {
+  const classes = useStyles({})
+
+  return <Collapse direction='down' in={true} timeout={1200}>
     <MaterialAppBar position='static'>
       <Toolbar>
         <Typography component='h1' variant='h6' color='inherit' style={{ flexGrow: 1 }}>
           PHAR {isWidthUp('sm', width) && ' ' + t('title')}
         </Typography>
         {connectionStatusStore.isOnline &&
-          <Button
-            color='inherit'
-            onClick={() => window.open(homepageUrl, '_blank')} >
+          <Button color='inherit' onClick={_githubPressed} className={classes.githubButton}>
             GitHub
-          </Button>}
-        <IconButton
-          color='inherit'
-          aria-label='Pack settings'
-          onClick={settingsClick}>
+            </Button>}
+        <IconButton color='inherit' aria-label='Pack settings' onClick={settingsClick}>
           <SettingsIcon />
         </IconButton>
       </Toolbar>
     </MaterialAppBar>
   </Collapse>
+}
 
 export default withWidth()(withTranslation()(inject('connectionStatusStore')(observer(Header))))

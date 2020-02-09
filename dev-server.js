@@ -14,6 +14,7 @@ const app = express()
   app
     .use(require('webpack-dev-middleware')(compiler, {
       publicPath: webpackConfig.output.publicPath,
+      // writeToDisk: true,
       index: 'index.html'
     }))
     .use(require('webpack-hot-middleware')(compiler, {

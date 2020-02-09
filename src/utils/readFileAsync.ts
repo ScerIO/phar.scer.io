@@ -1,4 +1,8 @@
-export default function readFileAsync(file: File): Promise<string|ArrayBuffer> {
+/**
+ * Promise wrapper for FileReader
+ * @param {File} file
+ */
+export default function readFileAsync(file: File): Promise<string | ArrayBuffer> {
   const reader = new FileReader()
   return new Promise((resolve, reject) => {
     reader.onerror = () => {

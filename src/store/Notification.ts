@@ -1,20 +1,20 @@
 import { observable, action } from 'mobx'
 
 export interface INotificationDetail {
-  message: string
-  type: NotificationType
+  message?: string
+  type?: NotificationType
   isTranslatable?: boolean
 }
 
 interface INotifyArgs extends INotificationDetail {
-  length: NotificationLength,
+  length?: NotificationLength,
 }
 
 export enum NotificationType {
+  ERROR = 'error',
+  WARNING = 'warning',
   INFO = 'info',
   SUCCESS = 'success',
-  WARNING = 'warning',
-  ERROR = 'error',
 }
 
 export enum NotificationLength {
@@ -26,7 +26,7 @@ export class NotificationStore {
   @observable
   public detail: INotificationDetail = null
 
-  public timeoutCallback: () => void = null
+  private timeoutCallback: () => void = null
 
   @action
   public notify = ({
@@ -34,7 +34,7 @@ export class NotificationStore {
     type = NotificationType.INFO,
     length = NotificationLength.SHORT,
     isTranslatable = true,
-  }: INotifyArgs) => new Promise((resolve) => {
+  }: INotifyArgs) => new Promise<void>((resolve) => {
     let timeout: NodeJS.Timeout | number
     this.detail = {
       type,
@@ -48,6 +48,39 @@ export class NotificationStore {
     }
     timeout = setTimeout(this.timeoutCallback, length)
   })
+
+  public success = (message: string, {
+    length = NotificationLength.SHORT,
+    isTranslatable = true,
+  }: INotifyArgs = {}): Promise<void> =>
+    this.notify({
+      message,
+      type: NotificationType.SUCCESS,
+      length,
+      isTranslatable,
+    });
+
+  public warning = (message: string, {
+    length = NotificationLength.SHORT,
+    isTranslatable = true,
+  }: INotifyArgs = {}): Promise<void> =>
+    this.notify({
+      message,
+      type: NotificationType.WARNING,
+      length,
+      isTranslatable,
+    });
+
+  public error = (message: string, {
+    length = NotificationLength.SHORT,
+    isTranslatable = true,
+  }: INotifyArgs = {}): Promise<void> =>
+    this.notify({
+      message,
+      type: NotificationType.ERROR,
+      length,
+      isTranslatable,
+    });
 
   @action
   public close = () => this.timeoutCallback()

@@ -10,42 +10,48 @@ import App from 'containers/App'
 import 'i18n'
 import ThemeProvider from 'containers/ThemeProvider'
 import { settingsStore } from 'store/Settings'
-import { notificationStore, NotificationType, NotificationLength } from 'store/Notification'
-import setThemeColor from 'utils/setThemeColor'
+import { notificationStore, NotificationLength } from 'store/Notification'
+import { setThemeColor } from 'utils'
 import { getMainColorByTheme } from 'theme'
 import { connectionStatusStore } from 'store/ConnectionStatus'
 
 const trunk = new AsyncTrunk(settingsStore, { storage: localStorage })
 
-if (process.env.NODE_ENV === 'production') {
+const isProduction = process.env.NODE_ENV === 'production';
+
+if (isProduction) {
   OfflinePluginRuntime.install({
     onUpdateReady() {
-      notificationStore.notify({
-        type: NotificationType.SUCCESS,
-        message: 'updates.progress',
+      notificationStore.success('updates.progress', {
         length: NotificationLength.SHORT,
       })
       OfflinePluginRuntime.applyUpdate()
     },
     async onUpdated() {
-      await notificationStore.notify({
-        type: NotificationType.WARNING,
-        message: 'updates.attention',
-        length: NotificationLength.SHORT,
+      await notificationStore.warning('updates.attention', {
+        length: NotificationLength.LONG,
+      })
+      ReactGA.event({
+        category: 'General',
+        action: 'App updated',
       })
       window.location.reload()
     },
     onUpdateFailed() {
-      notificationStore.notify({
-        type: NotificationType.ERROR,
-        message: 'updates.error',
-        length: NotificationLength.SHORT,
-      })
+      notificationStore.error('updates.error')
+      ReactGA.exception({
+        description: 'Update filed',
+      });
     },
   })
 }
 
-ReactGA.initialize('UA-125755321-1')
+ReactGA.initialize('UA-125755321-1', {
+  debug: !isProduction,
+  titleCase: false,
+})
+ReactGA.pageview(window.location.pathname + window.location.search)
+
 trunk.init().then(() => {
   ReactDOM.render(
     <Provider

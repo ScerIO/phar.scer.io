@@ -1,5 +1,9 @@
 import { hot } from 'react-hot-loader'
 
-export default (module) => (app) => module.hot
+/**
+ * Hot module replacement wrapper
+ * @param {NodeModule} module
+ */
+export default (module: NodeModule) => (app: () => JSX.Element | JSX.Element) => module.hot
   ? hot(module)(app)
   : app

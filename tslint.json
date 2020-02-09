@@ -9,6 +9,7 @@
     "object-literal-sort-keys": false,
     "curly": [true, "ignore-same-line"],
     "semicolon": [true, "never"],
-    "no-var-requires": false
+    "no-var-requires": false,
+    "no-unused-vars": ["warning", { "argsIgnorePattern": "^_" }]
   }
 }

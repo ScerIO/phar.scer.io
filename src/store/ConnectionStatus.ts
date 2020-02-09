@@ -15,7 +15,7 @@ export class ConnectionStatusStore {
   }
 
   @action
-  public updateOnlineStatus = (_: Event) => {
+  private updateOnlineStatus = (_: Event) => {
     this.status = navigator.onLine
       ? ConnectionStatus.online
       : ConnectionStatus.offline

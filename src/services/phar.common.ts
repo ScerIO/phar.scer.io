@@ -1,21 +1,9 @@
 import readFileAsync from 'utils/readFileAsync'
-import { ZipConverter, Archive, Compression, Signature } from 'phar'
-
-export interface IZipToPharOptions {
-  signature: Signature
-  stub: string
-  compress: boolean
-}
-
-export interface IPharConverterResult {
-  type: string
-  blob: Blob,
-  fileName: string,
-  error?: string
-}
+import { IZipToPharOptions, IPharConverterResult } from './phar.interfaces'
+import { ZipConverter, Archive, Compression } from 'phar'
 
 export async function zipToPhar(
-  file: File, { signature, stub, compress }: IZipToPharOptions): Promise<IPharConverterResult> {
+  { file, signature, stub, compress }: IZipToPharOptions): Promise<IPharConverterResult> {
   const fileName = file.name.substring(0, file.name.length - 3) + 'phar'
 
   const
@@ -55,24 +43,19 @@ export async function pharToZip(file: File): Promise<IPharConverterResult> {
 }
 
 export async function processFile(
-  file: File, options: IZipToPharOptions, callback?: (fileType: string) => void): Promise<IPharConverterResult> {
-  const extension = file.name.split('.').pop()
+  options: IZipToPharOptions,
+): Promise<IPharConverterResult> {
+  const extension = options.file.name.split('.').pop()
   switch (extension) {
     case 'phar':
-      if (callback) {
-        callback('phar_to_zip')
-      }
-      return pharToZip(file)
+      return pharToZip(options.file)
     case 'zip':
-      if (callback) {
-        callback('ZIP to PHAR')
-      }
-      return zipToPhar(file, options)
+      return zipToPhar(options)
     default:
       return {
         type: 'unsupported extension',
         blob: null,
-        fileName: file.name,
+        fileName: options.file.name,
         error: 'unsupported_extension',
       }
   }
