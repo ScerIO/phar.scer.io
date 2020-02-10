@@ -1,7 +1,5 @@
 import { observable, action } from 'mobx'
 import { Signature } from 'phar'
-import { setThemeColor } from 'utils'
-import { getMainColorByTheme } from 'theme'
 
 export enum ThemeType {
   light = 'light',
@@ -16,7 +14,7 @@ export class SettingsStore {
   @observable
   public stub: string = '<?php __HALT_COMPILER();'
   @observable
-  public theme: ThemeType = ThemeType.light
+  public theme: ThemeType
 
   @action
   public setSignature(signature: Signature) {
@@ -36,7 +34,6 @@ export class SettingsStore {
   @action
   public setTheme(theme: ThemeType) {
     this.theme = theme
-    setThemeColor(getMainColorByTheme(theme))
   }
 }
 
