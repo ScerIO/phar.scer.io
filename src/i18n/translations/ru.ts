@@ -16,6 +16,7 @@ export default {
   'unsupported-extension': 'Неподдерживаемое расширение файла',
   'theme': 'Тема',
   'themes': {
+    system: 'Системная',
     light: 'Светлая',
     dark: 'Темная',
   },

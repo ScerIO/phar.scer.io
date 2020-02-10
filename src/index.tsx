@@ -5,15 +5,12 @@ import ReactGA from 'react-ga'
 
 import { Provider } from 'mobx-react'
 import { AsyncTrunk } from 'mobx-sync'
-import { autorun } from 'mobx'
 import App from 'containers/App'
 
 import 'i18n'
 import ThemeProvider from 'containers/ThemeProvider'
-import { settingsStore, ThemeType } from 'store/Settings'
+import { settingsStore } from 'store/Settings'
 import { notificationStore, NotificationLength } from 'store/Notification'
-import { setThemeColor, isSystemPrefersDarkTheme } from 'utils'
-import { getMainColorByTheme } from 'theme'
 import { connectionStatusStore } from 'store/ConnectionStatus'
 
 const trunk = new AsyncTrunk(settingsStore, { storage: localStorage })
@@ -53,11 +50,7 @@ ReactGA.initialize('UA-125755321-1', {
 })
 ReactGA.pageview(window.location.pathname + window.location.search)
 
-trunk.init({
-  theme: isSystemPrefersDarkTheme()
-    ? ThemeType.dark
-    : ThemeType.light
-}).then(() => {
+trunk.init().then(() => {
   ReactDOM.render(
     <Provider
       settingsStore={settingsStore}
@@ -69,6 +62,4 @@ trunk.init({
     </Provider>,
     document.getElementById('root'),
   )
-
-  autorun(() => setThemeColor(getMainColorByTheme(settingsStore.theme)))
 })

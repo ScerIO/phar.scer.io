@@ -32,7 +32,7 @@ export class PackOptions extends React.Component<IProps, IState> {
       { stub } = this.state
 
     return (
-      <Grid container direction='column'>
+      <Grid container direction='column' spacing={2}>
         <Grid item>
           <FormLabel>{t('signature')}</FormLabel>
           <RadioGroup
@@ -77,7 +77,7 @@ export class PackOptions extends React.Component<IProps, IState> {
   }
 
   private handleSignatureChange = (_: React.ChangeEvent<{}>, value: string) => {
-    this.props.settingsStore.setSignature(Number(value))
+    this.props.settingsStore.signature = Number(value)
     ReactGA.event({
       category: 'Settings',
       action: 'Set signature',
@@ -86,7 +86,7 @@ export class PackOptions extends React.Component<IProps, IState> {
   }
 
   private handleCompressChange = (_: React.ChangeEvent<{}>, checked: boolean) => {
-    this.props.settingsStore.setCompress(Boolean(checked))
+    this.props.settingsStore.compress = Boolean(checked)
     ReactGA.event({
       category: 'Settings',
       action: 'Set compress',
@@ -95,7 +95,7 @@ export class PackOptions extends React.Component<IProps, IState> {
   }
 
   private handleStubBlur = (event: React.FocusEvent<HTMLInputElement>) => {
-    this.props.settingsStore.setStub(String(event.target.value))
+    this.props.settingsStore.stub = String(event.target.value)
     ReactGA.event({
       category: 'Settings',
       action: 'Set stub',

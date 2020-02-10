@@ -16,6 +16,7 @@ export default {
   'unsupported-extension': 'Unsupported file extension',
   'theme': 'Theme',
   'themes': {
+    system: 'System',
     light: 'Light',
     dark: 'Dark',
   },

@@ -17,9 +17,39 @@ export function setThemeColor(color: string) {
 }
 
 /**
- * Checking if a dark theme is enabled in the user's system
+ * Botch returns true if prefers-color-scheme supports
  * @returns {boolean}
  */
-export function isSystemPrefersDarkTheme(): boolean {
-  return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;;
+export function isSystemPrefersThemeSupport(): boolean {
+  return window.matchMedia && window.matchMedia(`(prefers-color-scheme)`).matches;
+}
+
+/**
+ * Return system theme brightness if supported
+ * @returns {SystemThemeCodes}
+ */
+export function systemPrefersTheme(): SystemThemeCodes {
+  if (_checkThemeMedia('dark')) {
+    return SystemThemeCodes.dark
+  } else if (_checkThemeMedia('light')) {
+    return SystemThemeCodes.light
+  }
+  return SystemThemeCodes.noSupport
+}
+
+/**
+ *
+ * @param {String} color brightness of theme
+ */
+function _checkThemeMedia(color: String): boolean {
+  return window.matchMedia && window.matchMedia(`(prefers-color-scheme: ${color})`).matches;
+}
+
+/**
+ * Result codes for systemPrefersTheme
+ */
+export enum SystemThemeCodes {
+  noSupport,
+  dark,
+  light,
 }

@@ -1,7 +1,13 @@
 import createMuiTheme from '@material-ui/core/styles/createMuiTheme'
 import green from '@material-ui/core/colors/green'
 import grey from '@material-ui/core/colors/grey'
-import { ThemeType } from 'store/Settings'
+import { isSystemPrefersThemeSupport } from 'utils'
+
+export enum ThemeType {
+  system = 'system',
+  light = 'light',
+  dark = 'dark',
+}
 
 const mainLightColor = '#FFFFFF'
 export const light = createMuiTheme({
@@ -29,7 +35,7 @@ export const dark = createMuiTheme({
   },
 })
 
-export function getMainColorByTheme(theme: ThemeType) {
+export function getMainColorByTheme(theme: ThemeType.light | ThemeType.dark) {
   switch (theme) {
     case ThemeType.light:
       return mainLightColor
@@ -38,4 +44,11 @@ export function getMainColorByTheme(theme: ThemeType) {
     default:
       throw new Error(`Theme "${theme}" not found`)
   }
+}
+
+export function getDefaultTheme(): ThemeType {
+  if (isSystemPrefersThemeSupport()) {
+    return ThemeType.system;
+  }
+  return ThemeType.light;
 }
