@@ -1,28 +1,23 @@
 import i18n from 'i18next'
 import LanguageDetector from 'i18next-browser-languagedetector'
 import { initReactI18next } from 'react-i18next'
-import {
-  en,
-  ru,
-} from './translations'
+import resources from '@alienfast/i18next-loader!./locales'
+
+let newRes = {};
+for (const ang in resources) {
+  newRes[ang] = {'translation': resources[ang]};
+}
 
 i18n
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
-    resources: {
-      en: {
-        translations: en,
-      },
-      ru: {
-        translations: ru,
-      },
-    },
+    resources: newRes,
     fallbackLng: 'en',
     debug: process.env.NODE_ENV !== 'production',
 
-    ns: ['translations'],
-    fallbackNS: 'translations',
+    ns: ['translation'],
+    fallbackNS: 'translation',
 
     keySeparator: '.',
 

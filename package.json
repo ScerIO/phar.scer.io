@@ -46,6 +46,7 @@
     "react-i18next": "^10.12.2"
   },
   "devDependencies": {
+    "@alienfast/i18next-loader": "^1.1.4",
     "copy-webpack-plugin": "^5.0.4",
     "cross-env": "^5.2.0",
     "file-loader": "^4.2.0",

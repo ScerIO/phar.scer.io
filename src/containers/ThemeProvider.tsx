@@ -1,8 +1,7 @@
 import * as React from 'react'
 import { ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline'
-import * as Themes from 'theme'
-import { ThemeType } from 'theme';
+import { ThemeType, getThemeByType, getMainColorByTheme } from 'theme';
 import { inject, observer } from 'mobx-react'
 import { SettingsStore } from 'store/Settings'
 import { systemPrefersTheme, SystemThemeCodes, setThemeColor } from 'utils';
@@ -12,7 +11,7 @@ interface IProps {
   settingsStore?: SettingsStore
 }
 
-function findTheme(theme: Themes.ThemeType): ThemeType.light | ThemeType.dark {
+function findTheme(theme: ThemeType): ThemeType.light | ThemeType.dark {
   if (theme != ThemeType.system) {
     return theme;
   }
@@ -31,10 +30,10 @@ function ThemeProvider({
   children,
 }: IProps) {
   let theme = findTheme(settingsStore.theme)
-  setThemeColor(Themes.getMainColorByTheme(theme))
+  setThemeColor(getMainColorByTheme(theme))
 
   return (
-    <MuiThemeProvider theme={Themes[ThemeType[theme]]}>
+    <MuiThemeProvider theme={getThemeByType(ThemeType[theme])}>
       <CssBaseline />
       {children}
     </MuiThemeProvider>

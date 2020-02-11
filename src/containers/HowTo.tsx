@@ -1,7 +1,6 @@
 import * as React from 'react'
 import ReactGA from 'react-ga'
-import { Theme } from '@material-ui/core/styles/createMuiTheme'
-import { makeStyles } from '@material-ui/styles'
+import { Theme, makeStyles } from '@material-ui/core/styles'
 import { withTranslation, WithTranslation } from 'react-i18next'
 import ExpansionPanel from '@material-ui/core/ExpansionPanel'
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary'

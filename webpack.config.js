@@ -55,6 +55,10 @@ module.exports = {
 
   module: {
     rules: [{
+      test: /locales/,
+      loader: '@alienfast/i18next-loader',
+      query: { relativePathAsNamespace: true }
+    }, {
       test: /\.mjs$/,
       type: 'javascript/auto'
     }, {

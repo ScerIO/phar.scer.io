@@ -1,7 +1,6 @@
 import * as React from 'react'
 import ReactGA from 'react-ga'
-import { Theme } from '@material-ui/core/styles/createMuiTheme'
-import { makeStyles } from '@material-ui/styles'
+import { Theme, makeStyles } from '@material-ui/core/styles'
 import MaterialAppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import Button from '@material-ui/core/Button'

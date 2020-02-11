@@ -35,6 +35,14 @@ export const dark = createMuiTheme({
   },
 })
 
+export function getThemeByType(type: ThemeType) {
+  if (type == ThemeType.dark) {
+    return dark;
+  } else {
+    return light;
+  }
+}
+
 export function getMainColorByTheme(theme: ThemeType.light | ThemeType.dark) {
   switch (theme) {
     case ThemeType.light:

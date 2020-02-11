@@ -8,3 +8,8 @@ declare const homepageUrl: string
 interface NodeModule {
   hot: boolean
 }
+
+declare module '@alienfast/i18next-loader*' {
+  const content: {};
+  export = content;
+}

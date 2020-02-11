@@ -14,7 +14,7 @@ import FormControl from '@material-ui/core/FormControl'
 import Select from '@material-ui/core/Select'
 import { withTranslation, WithTranslation } from 'react-i18next'
 import Grid from '@material-ui/core/Grid'
-import { inject, observer } from 'mobx-react'
+import { inject, observer, Observer } from 'mobx-react'
 import { SettingsStore } from 'store/Settings'
 import { isSystemPrefersThemeSupport } from 'utils'
 import { ThemeType } from 'theme'
@@ -34,12 +34,12 @@ function Settings({
   i18n,
 }: IProps) {
   function changeTheme(event: React.ChangeEvent<HTMLSelectElement>) {
+    settingsStore.theme = ThemeType[event.target.value]
     ReactGA.event({
       category: 'Settings',
       action: 'Set theme',
       label: event.target.value
-    });
-    settingsStore.theme = ThemeType[event.target.value]
+    })
   }
 
   return (
@@ -55,20 +55,22 @@ function Settings({
         <PackOptions />
         <Grid container direction='column'>
           <Grid item>
-            <FormControl fullWidth margin='normal'>
-              <InputLabel htmlFor='select-theme'>{i18n.t('theme')}</InputLabel>
-              <Select
-                value={ThemeType[settingsStore.theme]}
-                onChange={changeTheme}
-                inputProps={{
-                  name: 'theme',
-                  id: 'select-theme',
-                }}>
-                {isSystemPrefersThemeSupport() && <MenuItem value={ThemeType.system}>{i18n.t('themes.system')}</MenuItem>}
-                <MenuItem value={ThemeType.light}>{i18n.t('themes.light')}</MenuItem>
-                <MenuItem value={ThemeType.dark}>{i18n.t('themes.dark')}</MenuItem>
-              </Select>
-            </FormControl>
+            <Observer>
+              {() => <FormControl fullWidth margin='normal'>
+                <InputLabel htmlFor='select-theme'>{i18n.t('theme')}</InputLabel>
+                <Select
+                  value={ThemeType[settingsStore.theme]}
+                  onChange={changeTheme}
+                  inputProps={{
+                    name: 'theme',
+                    id: 'select-theme',
+                  }}>
+                  {isSystemPrefersThemeSupport() && <MenuItem value={ThemeType.system}>{i18n.t('themes.system')}</MenuItem>}
+                  <MenuItem value={ThemeType.light}>{i18n.t('themes.light')}</MenuItem>
+                  <MenuItem value={ThemeType.dark}>{i18n.t('themes.dark')}</MenuItem>
+                </Select>
+              </FormControl>}
+            </Observer>
           </Grid>
         </Grid>
       </DialogContent>

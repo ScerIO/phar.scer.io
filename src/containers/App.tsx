@@ -1,6 +1,6 @@
 import * as React from 'react'
 import ReactGA from 'react-ga'
-import { Theme, makeStyles } from '@material-ui/core/styles'
+import { Theme, createStyles, withStyles, WithStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
 import Grow from '@material-ui/core/Grow'
 import CenteredContainer from 'components/CenteredContainer'
@@ -10,9 +10,10 @@ import Header from 'containers/Header'
 import HowTo from 'containers/HowTo'
 import PharConverter from 'containers/PharConverter'
 import hmr from 'utils/hmr'
+import { observable } from 'mobx'
+import { observer } from 'mobx-react'
 
-
-const useStyles = makeStyles((theme: Theme) => ({
+const styles = (theme: Theme) => createStyles({
   container: {
     minHeight: '100vh',
     display: 'flex',
@@ -22,40 +23,43 @@ const useStyles = makeStyles((theme: Theme) => ({
     flex: 1,
     padding: theme.spacing(2),
   },
-}))
+})
 
-function App() {
-  const [settingsOpen, setSettingsOpen] = React.useState(false)
+class App extends React.Component<WithStyles> {
+  @observable
+  isSettingsOpen: boolean = false;
 
-  function openSettings() {
+  openSettings = () => {
     ReactGA.modalview('settings');
-    setSettingsOpen(true)
+    this.isSettingsOpen = true;
   }
 
-  function closeSettings() {
-    setSettingsOpen(false)
+  closeSettings = () => {
+    this.isSettingsOpen = false;
   }
 
-  const classes = useStyles({})
+  render() {
+    const classes = this.props.classes;
 
-  return (
-    <Grid className={classes.container}>
-      <Header settingsClick={openSettings} />
+    return (
+      <Grid className={classes.container}>
+        <Header settingsClick={this.openSettings} />
 
-      <Settings open={settingsOpen} onClose={closeSettings} />
+        <Settings open={this.isSettingsOpen} onClose={this.closeSettings} />
 
-      <CenteredContainer className={classes.content}>
-        <Grow in timeout={1200}>
-          <Grid container direction='column' alignItems='center'>
-            <HowTo />
-            <PharConverter />
-          </Grid>
-        </Grow>
-      </CenteredContainer>
+        <CenteredContainer className={classes.content}>
+          <Grow in timeout={1200}>
+            <Grid container direction='column' alignItems='center'>
+              <HowTo />
+              <PharConverter />
+            </Grid>
+          </Grow>
+        </CenteredContainer>
 
-      <Notification />
-    </Grid>
-  )
+        <Notification />
+      </Grid>
+    )
+  }
 }
 
-export default hmr(module)(App)
+export default hmr(module)(withStyles(styles)(observer(App)));

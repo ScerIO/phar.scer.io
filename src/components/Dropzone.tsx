@@ -1,8 +1,7 @@
 import * as React from 'react'
 import Paper from '@material-ui/core/Paper'
 import ReactDropzone from 'react-dropzone'
-import { createStyles, withStyles, WithStyles } from '@material-ui/styles'
-import { Theme } from '@material-ui/core/styles/createMuiTheme'
+import { Theme, createStyles, withStyles, WithStyles } from '@material-ui/core/styles'
 
 const styles = (theme: Theme) => createStyles({
   root: {
