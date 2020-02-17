@@ -1,0 +1,27 @@
+{
+  "title": "Online-Archivierer",
+  "select-file": "Datei aussuchen",
+  "select-or-drop": "$t(select-file) oder hier ablegen",
+  "settings": "die Einstellungen",
+  "close": "Schließen",
+  "signature": "Unterschrift",
+  "compress": "Komprimieren",
+  "stub": "Stub",
+  "success": "Erfolg",
+  "how-to-use": {
+    "title": "Wie benutzt man?",
+    "content": "Um das PHAR-Archiv zu entpacken, müssen Sie auf den Bereich darunter klicken oder die * .phar-Datei mit der Maus hineinziehen. Als Ergebnis des Entpackens erhalten Sie ein ZIP-Archiv. Um das PHAR-Archiv zu verpacken, müssen Sie auf den Bereich darunter klicken oder die * .zip-Datei mit der Maus hineinziehen. Nach dem Auspacken erhalten Sie ein PHAR-Archiv."
+  },
+  "unsupported-extension": "Nicht unterstützte Dateierweiterung",
+  "theme": "Thema",
+  "themes": {
+    "system": "System",
+    "light": "Licht",
+    "dark": "Dunkel"
+  },
+  "updates": {
+    "progress": "Eine neue Version der Site wird geladen.",
+    "attention": "Jetzt wird die Seite aktualisiert",
+    "error": "Site-Update fehlgeschlagen, bitte Seite neu laden"
+  }
+}
