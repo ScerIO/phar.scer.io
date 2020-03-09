@@ -1,0 +1,26 @@
+{
+  "title": "在线存档",
+  "select-file": "选择文件",
+  "settings": "设定值",
+  "close": "关",
+  "signature": "签名",
+  "compress": "压缩",
+  "stub": "存根",
+  "success": "成功",
+  "how-to-use": {
+    "title": "如何使用？",
+    "content": "要解压缩PHAR归档文件，您需要单击下面的区域或用鼠标将* .phar文件拖到其中。打开包装后，您将收到一个ZIP存档。 \n    要打包PHAR归档文件，您需要单击下面的区域或使用鼠标将* .zip文件拖到其中。打开包装后，您将收到PHAR存档。"
+  },
+  "unsupported-extension": "不支持的文件扩展名",
+  "theme": "主题",
+  "themes": {
+    "system": "系统",
+    "light": "光",
+    "dark": "暗"
+  },
+  "updates": {
+    "progress": "该网站的新版本正在加载。",
+    "attention": "现在页面将刷新",
+    "error": "网站更新失败，请重新加载页面"
+  }
+}
