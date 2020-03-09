@@ -22,5 +22,6 @@
     "progress": "Une nouvelle version du site est en cours de chargement.",
     "attention": "Maintenant, la page sera actualisée",
     "error": "La mise à jour du site a échoué, veuillez recharger la page"
-  }
+  },
+  "select-or-drop": "$t(select-file) ou déposez ici"
 }
