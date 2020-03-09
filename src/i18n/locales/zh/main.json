@@ -22,5 +22,6 @@
     "progress": "该网站的新版本正在加载。",
     "attention": "现在页面将刷新",
     "error": "网站更新失败，请重新加载页面"
-  }
+  },
+  "select-or-drop": "$t(select-file) 或放在这里"
 }
