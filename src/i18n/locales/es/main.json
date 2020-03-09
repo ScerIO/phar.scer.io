@@ -22,5 +22,6 @@
     "progress": "Se está cargando una nueva versión del sitio.",
     "attention": "Ahora la página se actualizará",
     "error": "Error en la actualización del sitio, vuelva a cargar la página"
-  }
+  },
+  "select-or-drop": "$t(select-file) o suelte aquí"
 }
