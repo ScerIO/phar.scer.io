@@ -1,0 +1,27 @@
+{
+  "title": "Archiveur en ligne",
+  "select-file": "Choisir le dossier",
+  "settings": "Réglages",
+  "close": "Fermer",
+  "signature": "Signature",
+  "compress": "Compresse",
+  "stub": "Talon",
+  "success": "Succès",
+  "how-to-use": {
+    "title": "Comment utiliser?",
+    "content": "Pour décompresser l'archive PHAR, vous devez cliquer sur la zone ci-dessous ou y faire glisser le fichier * .phar avec la souris. À la suite du déballage, vous recevrez une archive ZIP.  \n    Pour empaqueter l'archive PHAR, vous devez cliquer sur la zone ci-dessous ou y faire glisser le fichier * .zip avec la souris. À la suite du déballage, vous recevrez une archive PHAR."
+  },
+  "unsupported-extension": "Extension de fichier non prise en charge",
+  "theme": "Thème",
+  "themes": {
+    "system": "Système",
+    "light": "Lumière",
+    "dark": "Foncé"
+  },
+  "updates": {
+    "progress": "Une nouvelle version du site est en cours de chargement.",
+    "attention": "Maintenant, la page sera actualisée",
+    "error": "La mise à jour du site a échoué, veuillez recharger la page"
+  },
+  "select-or-drop": "$t(select-file) ou déposez ici"
+}
