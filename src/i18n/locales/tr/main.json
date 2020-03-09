@@ -1,0 +1,27 @@
+{
+  "title": "Çevrimiçi arşivleyici",
+  "select-file": "Dosya Seç",
+  "settings": "Ayarlar",
+  "close": "Kapat",
+  "signature": "İmza",
+  "compress": "Kompres",
+  "stub": "Taslak",
+  "success": "başarı",
+  "how-to-use": {
+    "title": "Nasıl kullanılır?",
+    "content": "PHAR arşivini açmak için aşağıdaki alanı tıklamanız veya * .phar dosyasını fareyle içine sürüklemeniz gerekir. Paketi açmanın bir sonucu olarak bir ZIP arşivi alırsınız.  \n    PHAR arşivini paketlemek için aşağıdaki alanı tıklamanız veya * .zip dosyasını fareyle içine sürüklemeniz gerekir. Paketten çıkarmanın bir sonucu olarak, bir PHAR arşivi alırsınız."
+  },
+  "unsupported-extension": "Desteklenmeyen dosya uzantısı",
+  "theme": "Tema",
+  "themes": {
+    "system": "sistem",
+    "light": "ışık",
+    "dark": "karanlık"
+  },
+  "updates": {
+    "progress": "Sitenin yeni bir sürümü yükleniyor.",
+    "attention": "Şimdi sayfa yenilenecek",
+    "error": "Site güncellemesi başarısız, lütfen sayfayı yeniden yükleyin"
+  },
+  "select-or-drop": "$t(select-file) veya buraya bırak"
+}
