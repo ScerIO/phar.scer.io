@@ -22,5 +22,6 @@
     "progress": "Sitenin yeni bir sürümü yükleniyor.",
     "attention": "Şimdi sayfa yenilenecek",
     "error": "Site güncellemesi başarısız, lütfen sayfayı yeniden yükleyin"
-  }
+  },
+  "select-or-drop": "$t(select-file) veya buraya bırak"
 }
